@@ -1,6 +1,7 @@
 package parrot.recorder;
 
 import com.google.gson.Gson;
+import parrot.InvocationInfo;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -32,6 +33,7 @@ public class RecordingProxy<T> implements InvocationHandler {
         Gson gson = new Gson();
         String resultStr = gson.toJson(result);
         Type genericReturnType = method.getGenericReturnType();
+        InvocationInfo invocationInfo = InvocationInfo.of(method, args);
 //            if(genericReturnType.toString().equals("java.util.Map<java.lang.String, java.util.List<java.lang.String>>")){
 //                String json = "{\"name\":[\"123\", \"456\"]}";
 //                Map<String, List<String>> ret = gson.fromJson(json, genericReturnType);

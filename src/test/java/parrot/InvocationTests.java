@@ -15,7 +15,7 @@ public class InvocationTests {
     @Test
     public void convertArgs_works(){
         Object[] args = getArgs();
-        List<Pair<String, Object>> queryParameters = Invocation.toQueryParameters(args);
+        List<Pair<String, Object>> queryParameters = InvocationInfo.toQueryParameters(args);
         String actual = queryParametersToString(queryParameters);
 //        System.out.println(actual);
         Assert.assertEquals(QUERY_PARAMETERS_STR, actual);

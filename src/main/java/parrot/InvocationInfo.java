@@ -16,17 +16,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Invocation{
+public class InvocationInfo {
     @NonNull
     private final String methodName;
 
     @NonNull
     private final List<Pair<String, Object>> queryParameters;
 
-    public static Invocation of(Method method, Object[] args){
+    public static InvocationInfo of(Method method, Object[] args){
         String methodName = method.getName();
         List<Pair<String, Object>> queryParameters = toQueryParameters(args);
-        return new Invocation(methodName, queryParameters);
+        return new InvocationInfo(methodName, queryParameters);
     }
 
     static List<Pair<String, Object>> toQueryParameters(Object[] args){
