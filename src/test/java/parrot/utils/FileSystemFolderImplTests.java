@@ -27,7 +27,7 @@ public class FileSystemFolderImplTests {
 
     @Ignore
     @Test
-    public void saveToFile_writesTOFileSystem(){
+    public void saveToFile_writesToFileSystem(){
         String contents = "Do it or do not, there is no try.";
         String fileName = "src/test/resources/writtenByTest.txt";
         fileSystemFolder.saveToFile(fileName, contents);
