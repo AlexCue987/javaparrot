@@ -8,18 +8,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class InvocationTests {
+    private final String QUERY_PARAMETERS_STR = "java.lang.String=My String\n" +
+            "java.lang.Integer=42\n" +
+            "java.lang.Long=123";
+
     @Test
     public void convertArgs_works(){
         Object[] args = getArgs();
         List<Pair<String, Object>> queryParameters = Invocation.toQueryParameters(args);
-        String actual = queryParameters.stream().
+        String actual = queryParametersToString(queryParameters);
+//        System.out.println(actual);
+        Assert.assertEquals(QUERY_PARAMETERS_STR, actual);
+    }
+
+    private String queryParametersToString(List<Pair<String, Object>> queryParameters) {
+        return queryParameters.stream().
                 map(Object::toString).
                 collect(Collectors.joining("\n"));
-//        System.out.println(actual);
-        String expected = "java.lang.String=My String\n" +
-                "java.lang.Integer=42\n" +
-                "java.lang.Long=123";
-        Assert.assertEquals(expected, actual);
     }
 
     private Object[] getArgs() {
@@ -29,5 +34,4 @@ public class InvocationTests {
         args[2] = 123L;
         return args;
     }
-
 }
