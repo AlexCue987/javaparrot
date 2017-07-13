@@ -40,13 +40,14 @@ public class RecordingProxy<T> implements InvocationHandler {
         String className = t.getClass().getSimpleName();
         Type genericReturnType = method.getGenericReturnType();
         CallerInfo callerInfo = new CallerInfo(className, method.getName());
-        InvocationInfo invocationInfo = InvocationInfo.of(method, args);
+        InvocationInfo invocationInfo = InvocationInfo.of(proxyUsedFrom, callerInfo, args);
 //            if(genericReturnType.toString().equals("java.util.Map<java.lang.String, java.util.List<java.lang.String>>")){
 //                String json = "{\"name\":[\"123\", \"456\"]}";
 //                Map<String, List<String>> ret = gson.fromJson(json, genericReturnType);
 //                System.out.println(ret);
 //            }
-        System.out.println(method.getName() + " " + method.getReturnType() + " " + genericReturnType);
+        System.out.println(invocationInfo);
+        System.out.println(genericReturnType);
         Object result2 = gson.fromJson(resultStr, genericReturnType);
         if(result2 == null){
             System.out.println("null");

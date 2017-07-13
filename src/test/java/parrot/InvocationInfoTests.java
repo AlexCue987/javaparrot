@@ -7,7 +7,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InvocationTests {
+public class InvocationInfoTests {
     private final String QUERY_PARAMETERS_STR = "java.lang.String=My String\n" +
             "java.lang.Integer=42\n" +
             "java.lang.Long=123";
