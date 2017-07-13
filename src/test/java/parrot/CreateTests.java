@@ -1,9 +1,11 @@
 package parrot;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,6 +16,62 @@ public class CreateTests {
 
     @Test
     public void works() throws ClassNotFoundException {
+        Gson gson = new Gson();
+        Map<String, Object> attributes1 = new HashMap<>(2);
+        attributes1.put("name", "box");
+        attributes1.put("barCode", "123123");
+        List<String> names1 = Arrays.asList("my best box", "box #1");
+        NestedThing nestedThing = new NestedThing(names1, attributes1);
+        Map<String, String> messageToSend = new HashMap<>(2);
+        String name = nestedThing.getClass().getName();
+        messageToSend.put("type", name);
+        String payloadJson = gson.toJson(nestedThing);
+        messageToSend.put("payload", payloadJson);
+
+        String m = gson.toJson(nestedThing);
+        Type messageType = new TypeToken<Map<String, String>>(){}.getType();
+        String messageJson = gson.toJson(messageToSend, messageType);
+
+        System.out.println(messageJson);
+
+//        Type messageType = new TypeToken<Map<String, Object>>() {}.getType();
+        Map<String, String> receivedMessage = gson.fromJson(messageJson, messageType);
+//
+        Class<?> clazz = Class.forName(receivedMessage.get("type").toString());
+        String receivedPayloadStr = receivedMessage.get("payload");
+//
+//        String payloadJson = gson.toJson(payload);
+        Type payloadType = getType(receivedMessage.get("type").toString());
+
+        Type nestedThingType = new TypeToken<NestedThing>() {}.getType();
+        Object typedPayload = gson.fromJson(payloadJson, payloadType);
+        System.out.println(typedPayload);
+    }
+
+    static Type getType(String typeName){
+        switch (typeName){
+            case "parrot.NestedThing":
+                return new TypeToken<NestedThing>() {}.getType();
+            default:
+                throw new RuntimeException("Unsupported type: " + typeName);
+        }
+    }
+
+
+    static Type getSuperclassTypeParameter(Class<?> subclass) {
+        Type superclass = subclass.getGenericSuperclass();
+        if(superclass instanceof Class) {
+            throw new RuntimeException("Missing type parameter.");
+        } else {
+            ParameterizedType parameterized = (ParameterizedType)superclass;
+            return null;
+//            return Types.canonicalize(parameterized.getActualTypeArguments()[0]);
+        }
+    }
+
+
+    @Test
+    public void works2() throws ClassNotFoundException {
         Map<String, Object> attributes1 = new HashMap<>(2);
         attributes1.put("name", "box");
         attributes1.put("barCode", "123123");
@@ -25,20 +83,23 @@ public class CreateTests {
         messageToSend.put("payload", nestedThing);
 
         Gson gson = new Gson();
-        String m = gson.toJson(nestedThing);
-        String message = gson.toJson(messageToSend);
+        String messageJson = gson.toJson(messageToSend);
+        System.out.println(messageJson);
 
         Type messageType = new TypeToken<Map<String, Object>>() {}.getType();
-        Map<String, Object> receivedMessage = gson.fromJson(message, messageType);
+        Map<String, Object> receivedMessage = gson.fromJson(messageJson, messageType);
+        System.out.println(receivedMessage);
+    }
 
-        Class<?> clazz = Class.forName(receivedMessage.get("type").toString());
-        Object payload = receivedMessage.get("payload");
 
-        String payloadJson = gson.toJson(payload);
-//        Type payloadType = new TypeName(receivedMessage.get("type").toString()){};
+    class TypeName implements Type{
+        private final String name;
 
-        Object typedPayload = gson.fromJson(payloadJson, clazz);
-        System.out.println(typedPayload);
+        TypeName(String name) {
+            this.name = name;
+        }
 
+        @Override
+        public String toString(){return name;}
     }
 }
