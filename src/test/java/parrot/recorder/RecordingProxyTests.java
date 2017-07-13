@@ -1,11 +1,14 @@
 package parrot.recorder;
 
 import org.junit.Test;
+import parrot.utils.CallerInfo;
+import parrot.utils.StackReader;
 
 public class RecordingProxyTests {
     @Test
     public void works(){
-        RecordingProxy<Box> boxProxy = new RecordingProxy<>(new BoxImpl());
+        CallerInfo callerInfo = StackReader.getCallerInfo(0);
+        RecordingProxy<Box> boxProxy = new RecordingProxy<>(new BoxImpl(), callerInfo);
         Box box = boxProxy.getProxy(Box.class);
         box.getSize();
     }

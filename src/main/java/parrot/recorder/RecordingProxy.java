@@ -2,6 +2,8 @@ package parrot.recorder;
 
 import com.google.gson.Gson;
 import parrot.InvocationInfo;
+import parrot.utils.CallerInfo;
+import parrot.utils.StackReader;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -10,9 +12,11 @@ import java.lang.reflect.Type;
 
 public class RecordingProxy<T> implements InvocationHandler {
     private final T t;
+    private final CallerInfo proxyUsedFrom;
 
-    RecordingProxy(T t) {
+    RecordingProxy(T t, CallerInfo proxyUsedFrom) {
         this.t = t;
+        this.proxyUsedFrom = proxyUsedFrom;
     }
 
     public T getProxy(Class<T> classToStub){
@@ -23,7 +27,8 @@ public class RecordingProxy<T> implements InvocationHandler {
     }
 
     public static<T> T getProxy(T t, Class<T> classToStub){
-        RecordingProxy<T> proxy = new RecordingProxy<>(t);
+        CallerInfo callerInfo = StackReader.getCallerInfo(1);
+        RecordingProxy<T> proxy = new RecordingProxy<>(t, callerInfo);
         return proxy.getProxy(classToStub);
     }
 
@@ -34,6 +39,7 @@ public class RecordingProxy<T> implements InvocationHandler {
         String resultStr = gson.toJson(result);
         String className = t.getClass().getSimpleName();
         Type genericReturnType = method.getGenericReturnType();
+        CallerInfo callerInfo = new CallerInfo(className, method.getName());
         InvocationInfo invocationInfo = InvocationInfo.of(method, args);
 //            if(genericReturnType.toString().equals("java.util.Map<java.lang.String, java.util.List<java.lang.String>>")){
 //                String json = "{\"name\":[\"123\", \"456\"]}";

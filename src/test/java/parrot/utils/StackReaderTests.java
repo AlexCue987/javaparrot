@@ -32,6 +32,14 @@ public class StackReaderTests {
         Assert.assertEquals("Mars", StackReader.getSimpleClassName(fullCalssName));
     }
 
+    @Test
+    public void getCallerInfo_works(){
+        CallerInfo expected = new CallerInfo("StackReaderTests", "getCallerInfo_works");
+        int stepsUp = 0;
+        CallerInfo actual = StackReader.getCallerInfo(stepsUp);
+        Assert.assertEquals(expected, actual);
+    }
+
     private class InnerClass{
         private String run(){
             int stepsUp = 0;
