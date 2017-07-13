@@ -26,6 +26,12 @@ public class StackReaderTests {
         Assert.assertEquals(expected, o.getConstructorName());
     }
 
+    @Test
+    public void getSimpleClassName_works(){
+        String fullCalssName = "solar.system.Mars";
+        Assert.assertEquals("Mars", StackReader.getSimpleClassName(fullCalssName));
+    }
+
     private class InnerClass{
         private String run(){
             int stepsUp = 0;

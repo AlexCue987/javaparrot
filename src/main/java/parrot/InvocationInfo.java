@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,9 @@ public class InvocationInfo {
     }
 
     static List<Pair<String, Object>> toQueryParameters(Object[] args){
+        if(args == null){
+            return new ArrayList<>(0);
+        }
         return Arrays.stream(args).
                 map(arg -> new Pair<>(arg.getClass().getName(), arg)).
                 collect(Collectors.toList());

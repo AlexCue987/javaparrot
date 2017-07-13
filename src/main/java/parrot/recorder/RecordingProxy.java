@@ -32,6 +32,7 @@ public class RecordingProxy<T> implements InvocationHandler {
         Object result = method.invoke(t, args);
         Gson gson = new Gson();
         String resultStr = gson.toJson(result);
+        String className = t.getClass().getSimpleName();
         Type genericReturnType = method.getGenericReturnType();
         InvocationInfo invocationInfo = InvocationInfo.of(method, args);
 //            if(genericReturnType.toString().equals("java.util.Map<java.lang.String, java.util.List<java.lang.String>>")){

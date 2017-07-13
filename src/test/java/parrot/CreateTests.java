@@ -1,11 +1,9 @@
 package parrot;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,26 +47,14 @@ public class CreateTests {
     }
 
     static Type getType(String typeName){
-        switch (typeName){
-            case "parrot.NestedThing":
-                return new TypeToken<NestedThing>() {}.getType();
-            default:
-                throw new RuntimeException("Unsupported type: " + typeName);
+        try {
+            Class<?> clazz = Class.forName(typeName);
+            TypeToken<?> typeToken = TypeToken.get(clazz);
+            return typeToken.getType();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unsupported type: " + typeName);
         }
     }
-
-
-    static Type getSuperclassTypeParameter(Class<?> subclass) {
-        Type superclass = subclass.getGenericSuperclass();
-        if(superclass instanceof Class) {
-            throw new RuntimeException("Missing type parameter.");
-        } else {
-            ParameterizedType parameterized = (ParameterizedType)superclass;
-            return null;
-//            return Types.canonicalize(parameterized.getActualTypeArguments()[0]);
-        }
-    }
-
 
     @Test
     public void works2() throws ClassNotFoundException {

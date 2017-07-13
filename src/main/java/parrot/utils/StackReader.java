@@ -11,4 +11,9 @@ public class StackReader {
         String className = tokens[tokens.length - 1];
         return String.format("%s.%s", className, caller.getMethodName());
     }
+
+    static String getSimpleClassName(String fullClassName){
+        String[] tokens = fullClassName.split(Pattern.quote("."));
+        return tokens[tokens.length - 1];
+    }
 }
