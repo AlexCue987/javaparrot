@@ -2,6 +2,8 @@ package parrot.storage;
 
 import parrot.InvocationInfo;
 import parrot.utils.CallerInfo;
+import parrot.utils.FileSystemFolder;
+import parrot.utils.FileSystemFolderImpl;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,10 +14,12 @@ public class InvocationRecorderImpl implements InvocationRecorder {
 
     @Override
     public void save(InvocationInfo invocationInfo, Object result) {
-
+        String fileName = getFileName(invocationInfo);
+        FileSystemFolder fileSystemFolder = new FileSystemFolderImpl();
+        String fileContents = fileSystemFolder.readFromFile(fileName);
     }
 
-    String getFilePath(InvocationInfo invocationInfo){
+    String getFileName(InvocationInfo invocationInfo){
         CallerInfo proxyUsedFrom = invocationInfo.getProxyUsedFrom();
         CallerInfo callerInfo = invocationInfo.getCallerInfo();
         Path fullPath = addFoldersToBasePath(basePathStr, proxyUsedFrom, callerInfo);

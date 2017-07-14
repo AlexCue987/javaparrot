@@ -5,6 +5,7 @@ public interface FileSystemFolder {
     boolean fileExists(String fileName);
     void saveToFile(String fileName, String contentsToSave);
     String readFromFile(String fileName);
+    String readFromFileWithDefaultValue(String fileName, String defaultValue);
     void ensurePathExists(String path);
 }
 

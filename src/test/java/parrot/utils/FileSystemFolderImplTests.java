@@ -6,7 +6,9 @@ import org.junit.Test;
 
 public class FileSystemFolderImplTests {
     public static final String FILE_NAME = "src/test/resources/sample.txt";
+    public static final String SAMPLE_DATA = "sample data";
     FileSystemFolder fileSystemFolder = new FileSystemFolderImpl();
+    final String defaultValue = "DefaultValue";
 
     @Test
     public void resolves(){
@@ -36,6 +38,21 @@ public class FileSystemFolderImplTests {
     @Test
     public void readFromFile(){
         String actual = fileSystemFolder.readFromFile(FILE_NAME);
-        Assert.assertEquals("sample data", actual);
+        Assert.assertEquals(SAMPLE_DATA, actual);
+    }
+
+    @Test
+    public void readFromFileWithDefaultValue_returnsDefault(){
+        String badFileName = "NoSuchFile";
+        String actual = fileSystemFolder.readFromFileWithDefaultValue(badFileName, defaultValue);
+        Assert.assertEquals(defaultValue, actual);
+    }
+
+    @Test
+    public void readFromFileWithDefaultValue_readsFromFile(){
+        String badFileName = "NoSuchFile";
+        String defaultValue = "DefaultValue";
+        String actual = fileSystemFolder.readFromFileWithDefaultValue(FILE_NAME, defaultValue);
+        Assert.assertEquals(SAMPLE_DATA, actual);
     }
 }

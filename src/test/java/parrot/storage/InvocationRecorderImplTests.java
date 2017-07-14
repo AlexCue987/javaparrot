@@ -18,10 +18,10 @@ public class InvocationRecorderImplTests {
     private final InvocationRecorderImpl invocationRecorder = new InvocationRecorderImpl();
 
     @Test
-    public void getFilePath_works(){
+    public void getFileName_works(){
         List<Pair<String, Object>> queryParameters = new ArrayList<>();
         final InvocationInfo invocationInfo = new InvocationInfo(proxyUsedFrom, callerInfo, queryParameters);
-        String actual = invocationRecorder.getFilePath(invocationInfo);
+        String actual = invocationRecorder.getFileName(invocationInfo);
         Assert.assertEquals("src/test/javaparrot/TestClass/TestMethod/StubbedClass/StubbedMethod.json", actual.toString());
     }
 

@@ -38,6 +38,14 @@ public class FileSystemFolderImpl implements FileSystemFolder{
     }
 
     @Override
+    public String readFromFileWithDefaultValue(String fileName, String defaultValue) {
+        if(!fileExists(fileName)){
+            return defaultValue;
+        }
+        return readFromFile(fileName);
+    }
+
+    @Override
     public void ensurePathExists(String path){
         File dirs = new File(path);
         if(!dirs.exists()){
