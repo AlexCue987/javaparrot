@@ -50,7 +50,6 @@ public class FileSystemFolderImplTests {
 
     @Test
     public void readFromFileWithDefaultValue_readsFromFile(){
-        String badFileName = "NoSuchFile";
         String defaultValue = "DefaultValue";
         String actual = fileSystemFolder.readFromFileWithDefaultValue(FILE_NAME, defaultValue);
         Assert.assertEquals(SAMPLE_DATA, actual);

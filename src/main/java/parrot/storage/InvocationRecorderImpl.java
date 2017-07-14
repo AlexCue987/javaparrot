@@ -16,7 +16,8 @@ public class InvocationRecorderImpl implements InvocationRecorder {
     public void save(InvocationInfo invocationInfo, Object result) {
         String fileName = getFileName(invocationInfo);
         FileSystemFolder fileSystemFolder = new FileSystemFolderImpl();
-        String fileContents = fileSystemFolder.readFromFile(fileName);
+        String defaultValue = "[]";
+        String fileContents = fileSystemFolder.readFromFileWithDefaultValue(fileName, defaultValue);
     }
 
     String getFileName(InvocationInfo invocationInfo){
