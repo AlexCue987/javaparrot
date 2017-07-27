@@ -1,11 +1,12 @@
 package parrot;
 
-import javafx.util.Pair;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import parrot.utils.CallerInfo;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class InvocationInfo {
             return new ArrayList<>(0);
         }
         return Arrays.stream(args).
-                map(arg -> new Pair<>(arg.getClass().getName(), arg)).
+                map(arg -> new ImmutablePair<>(arg.getClass().getName(), arg)).
                 collect(Collectors.toList());
     }
 }

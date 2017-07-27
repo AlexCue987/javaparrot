@@ -1,6 +1,6 @@
 package parrot;
 
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class InvocationInfoTests {
-    private final String QUERY_PARAMETERS_STR = "java.lang.String=My String\n" +
-            "java.lang.Integer=42\n" +
-            "java.lang.Long=123";
+    private final String QUERY_PARAMETERS_STR = "(java.lang.String,My String)\n" +
+            "(java.lang.Integer,42)\n" +
+            "(java.lang.Long,123)";
 
     @Test
     public void convertArgs_works(){

@@ -1,6 +1,7 @@
 package parrot.storage;
 
-import javafx.util.Pair;
+
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
 import org.junit.Test;
 import parrot.InvocationInfo;
