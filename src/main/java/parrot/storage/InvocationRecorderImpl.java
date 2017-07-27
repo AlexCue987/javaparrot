@@ -15,17 +15,22 @@ import java.util.Arrays;
 import java.util.List;
 
 public class InvocationRecorderImpl implements InvocationRecorder {
-    public final String basePathStr = "src/test/javaparrot";
+    public final String basePathStr = "src/test/resources/javaparrot";
+    private final FileSystemFolder fileSystemFolder = new FileSystemFolderImpl();
 
     @Override
     public void save(InvocationInfo invocationInfo, Object result) {
         String fileName = getFileName(invocationInfo);
-        FileSystemFolder fileSystemFolder = new FileSystemFolderImpl();
         String defaultValue = "[]";
         String fileContents = fileSystemFolder.readFromFileWithDefaultValue(fileName, defaultValue);
-        List<InvocationInfo> existingInvocations = getInvocationInfoList(fileContents);
-        existingInvocations.add(invocationInfo);
-//        Gson gson = GsonBuilder
+        List<InvocationInfo> invocationInfoList = getInvocationInfoList(fileContents);
+        invocationInfoList.add(invocationInfo);
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .create();
+        String newContentsToSave = gson.toJson(invocationInfoList);
+        fileSystemFolder.saveToFile(fileName, newContentsToSave);
     }
 
     String getFileName(InvocationInfo invocationInfo){
@@ -33,7 +38,7 @@ public class InvocationRecorderImpl implements InvocationRecorder {
         CallerInfo callerInfo = invocationInfo.getCallerInfo();
         Path fullPath = addFoldersToBasePath(basePathStr, proxyUsedFrom, callerInfo);
         String fileName = callerInfo.getMethodName() + ".json";
-        return fullPath.resolve(fileName).toString();
+        return fileSystemFolder.resolve(fullPath.toString(), fileName);
     }
 
     Path addFoldersToBasePath(String basePathStr, CallerInfo proxyUsedFrom, CallerInfo callerInfo) {

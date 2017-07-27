@@ -12,6 +12,7 @@ public class FileSystemFolderImpl implements FileSystemFolder{
     @Override
     public String resolve(String folderName, String fileName) {
         Path folderPath = Paths.get(folderName);
+        ensurePathExists(folderName);
         Path fullPath = folderPath.resolve(fileName);
         return fullPath.toString();
     }
