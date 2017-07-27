@@ -31,4 +31,11 @@ public class InvocationRecorderImplTests {
         Path actual = invocationRecorder.addFoldersToBasePath(basePathStr, proxyUsedFrom, callerInfo);
         Assert.assertEquals("basePathStr/TestClass/TestMethod/StubbedClass", actual.toString());
     }
+
+    @Test
+    public void getInvocationInfoList_works(){
+        List<InvocationInfo> actual = new InvocationRecorderImpl().getInvocationInfoList("[]");
+        System.out.println(actual);
+        Assert.assertEquals(0, actual.size());
+    }
 }
