@@ -9,5 +9,19 @@
       "methodName": "myMethoid"
     },
     "queryParameters": []
+  },
+  {
+    "proxyUsedFrom": {
+      "simpleClassName": "MyProxyClass",
+      "methodName": "myProxyMethod"
+    },
+    "callerInfo": {
+      "simpleClassName": "MyClass",
+      "methodName": "myMethoid"
+    },
+    "queryParameters": [
+      {},
+      {}
+    ]
   }
 ]

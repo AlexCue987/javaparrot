@@ -1,6 +1,7 @@
 package parrot.storage;
 
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -8,8 +9,10 @@ import org.junit.Test;
 import parrot.InvocationInfo;
 import parrot.utils.CallerInfo;
 
+import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InvocationRecorderImplTests {
@@ -35,7 +38,7 @@ public class InvocationRecorderImplTests {
 
     @Test
     public void getInvocationInfoList_works(){
-        List<InvocationInfo> actual = new InvocationRecorderImpl().getInvocationInfoList("[]");
+        List<InvocationInfo> actual = new InvocationRecorderImpl().parseJson("[]");
         System.out.println(actual);
         Assert.assertEquals(0, actual.size());
     }
@@ -44,8 +47,11 @@ public class InvocationRecorderImplTests {
     @Test
     public void works(){
         CallerInfo proxyUsedFrom = new CallerInfo("MyProxyClass", "myProxyMethod");
-        CallerInfo callerInfo = new CallerInfo("MyClass", "myMethoid");
-        InvocationInfo info = new InvocationInfo(proxyUsedFrom, callerInfo, new ArrayList<>());
+        CallerInfo callerInfo = new CallerInfo("MyClass", "myMethod");
+        ArrayList<Pair<String, Object>> queryParameters = new ArrayList<>(2);
+        queryParameters.add(new ImmutablePair<String, Object>("length", new Integer(5)));
+        queryParameters.add(new ImmutablePair<String, Object>("weight", new BigDecimal("1.2")));
+        InvocationInfo info = new InvocationInfo(proxyUsedFrom, callerInfo, queryParameters);
         InvocationRecorderImpl recorder = new InvocationRecorderImpl();
         recorder.save(info, "results");
     }

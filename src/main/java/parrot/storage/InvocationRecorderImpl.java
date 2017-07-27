@@ -15,16 +15,32 @@ import java.util.Arrays;
 import java.util.List;
 
 public class InvocationRecorderImpl implements InvocationRecorder {
-    public final String basePathStr = "src/test/resources/javaparrot";
-    private final FileSystemFolder fileSystemFolder = new FileSystemFolderImpl();
+    public static final String basePathStr = "src/test/resources/javaparrot";
+    private final FileSystemFolder fileSystemFolder;
+
+    InvocationRecorderImpl(FileSystemFolder fileSystemFolder){
+        this.fileSystemFolder = fileSystemFolder;
+    }
+
+    public InvocationRecorderImpl(){
+        this(new FileSystemFolderImpl());
+    }
 
     @Override
     public void save(InvocationInfo invocationInfo, Object result) {
         String fileName = getFileName(invocationInfo);
+        List<InvocationInfo> invocationInfoList = getPreviousInvocations(fileName);
+        invocationInfoList.add(invocationInfo);
+        saveInvocations(fileName, invocationInfoList);
+    }
+
+    private List<InvocationInfo> getPreviousInvocations(String fileName) {
         String defaultValue = "[]";
         String fileContents = fileSystemFolder.readFromFileWithDefaultValue(fileName, defaultValue);
-        List<InvocationInfo> invocationInfoList = getInvocationInfoList(fileContents);
-        invocationInfoList.add(invocationInfo);
+        return parseJson(fileContents);
+    }
+
+    private void saveInvocations(String fileName, List<InvocationInfo> invocationInfoList) {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .disableHtmlEscaping()
@@ -52,7 +68,7 @@ public class InvocationRecorderImpl implements InvocationRecorder {
     }
 
 
-    public List<InvocationInfo> getInvocationInfoList(String json) {
+    public List<InvocationInfo> parseJson(String json) {
         Type type = new TypeToken<List<InvocationInfo>>(){}.getType();
         Gson gson = new Gson();
         List<InvocationInfo> invocationInfoList = gson.fromJson(json, type);
