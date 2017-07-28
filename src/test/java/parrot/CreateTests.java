@@ -41,7 +41,7 @@ public class CreateTests {
 //        String payloadJson = gson.toJson(payload);
         Type payloadType = getType(receivedMessage.get("type").toString());
 
-        Type nestedThingType = new TypeToken<NestedThing>() {}.getType();
+//        Type nestedThingType = new TypeToken<NestedThing>() {}.getType();
         Object typedPayload = gson.fromJson(payloadJson, payloadType);
         System.out.println(typedPayload);
     }

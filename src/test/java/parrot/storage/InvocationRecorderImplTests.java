@@ -1,18 +1,16 @@
 package parrot.storage;
 
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import parrot.InvocationInfo;
+import parrot.NameValuePair;
 import parrot.utils.CallerInfo;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InvocationRecorderImplTests {
@@ -24,7 +22,7 @@ public class InvocationRecorderImplTests {
 
     @Test
     public void getFileName_works(){
-        List<Pair<String, Object>> queryParameters = new ArrayList<>();
+        List<NameValuePair> queryParameters = new ArrayList<>();
         final InvocationInfo invocationInfo = new InvocationInfo(proxyUsedFrom, callerInfo, queryParameters);
         String actual = invocationRecorder.getFileName(invocationInfo);
         Assert.assertEquals("src/test/resources/javaparrot/TestClass/TestMethod/StubbedClass/StubbedMethod.json", actual.toString());
@@ -48,9 +46,9 @@ public class InvocationRecorderImplTests {
     public void works(){
         CallerInfo proxyUsedFrom = new CallerInfo("MyProxyClass", "myProxyMethod");
         CallerInfo callerInfo = new CallerInfo("MyClass", "myMethod");
-        ArrayList<Pair<String, Object>> queryParameters = new ArrayList<>(2);
-        queryParameters.add(new ImmutablePair<String, Object>("length", new Integer(5)));
-        queryParameters.add(new ImmutablePair<String, Object>("weight", new BigDecimal("1.2")));
+        ArrayList<NameValuePair> queryParameters = new ArrayList<>(2);
+        queryParameters.add(new NameValuePair("length", new Integer(5), Integer.class.getName()));
+        queryParameters.add(new NameValuePair("weight", new BigDecimal("1.2"), BigDecimal.class.getName()));
         InvocationInfo info = new InvocationInfo(proxyUsedFrom, callerInfo, queryParameters);
         InvocationRecorderImpl recorder = new InvocationRecorderImpl();
         recorder.save(info, "results");
