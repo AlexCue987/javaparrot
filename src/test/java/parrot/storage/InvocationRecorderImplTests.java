@@ -6,6 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import parrot.InvocationInfo;
 import parrot.NameValuePair;
+import parrot.recorder.RecordingProxy;
 import parrot.utils.CallerInfo;
 
 import java.math.BigDecimal;
@@ -53,4 +54,12 @@ public class InvocationRecorderImplTests {
         InvocationRecorderImpl recorder = new InvocationRecorderImpl();
         recorder.save(info, "results");
     }
+
+    @Test
+    public void works2(){
+        Box box = RecordingProxy.getProxy(new BoxImpl(), Box.class);
+        box.getSize();
+    }
+
+
 }

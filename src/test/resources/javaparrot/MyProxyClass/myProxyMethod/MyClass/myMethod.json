@@ -9,69 +9,15 @@
       "methodName": "myMethod"
     },
     "queryParameters": [
-      {},
-      {}
-    ]
-  },
-  {
-    "proxyUsedFrom": {
-      "simpleClassName": "MyProxyClass",
-      "methodName": "myProxyMethod"
-    },
-    "callerInfo": {
-      "simpleClassName": "MyClass",
-      "methodName": "myMethod"
-    },
-    "queryParameters": [
       {
-        "name": "length",
-        "value": 5.0
-      },
-      {
-        "name": "weight",
-        "value": 1.2
-      }
-    ]
-  },
-  {
-    "proxyUsedFrom": {
-      "simpleClassName": "MyProxyClass",
-      "methodName": "myProxyMethod"
-    },
-    "callerInfo": {
-      "simpleClassName": "MyClass",
-      "methodName": "myMethod"
-    },
-    "queryParameters": [
-      {
-        "name": "length",
-        "value": 5.0
-      },
-      {
-        "name": "weight",
-        "value": 1.2
-      }
-    ]
-  },
-  {
-    "proxyUsedFrom": {
-      "simpleClassName": "MyProxyClass",
-      "methodName": "myProxyMethod"
-    },
-    "callerInfo": {
-      "simpleClassName": "MyClass",
-      "methodName": "myMethod"
-    },
-    "queryParameters": [
-      {
-        "name": "length",
+        "declaredTypeName": "length",
         "value": 5,
-        "typeName": "java.lang.Integer"
+        "submittedTypeName": "java.lang.Integer"
       },
       {
-        "name": "weight",
+        "declaredTypeName": "weight",
         "value": 1.2,
-        "typeName": "java.math.BigDecimal"
+        "submittedTypeName": "java.math.BigDecimal"
       }
     ]
   }

@@ -8,11 +8,11 @@ import lombok.*;
 @ToString
 public class NameValuePair {
     @NonNull
-    private final String name;
+    private final String declaredTypeName;
 
     @NonNull
     private final Object value;
 
     @NonNull
-    private final String typeName;
+    private final String submittedTypeName;
 }

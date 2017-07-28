@@ -2,6 +2,8 @@ package parrot.recorder;
 
 import com.google.gson.Gson;
 import parrot.InvocationInfo;
+import parrot.storage.InvocationRecorder;
+import parrot.storage.InvocationRecorderImpl;
 import parrot.utils.CallerInfo;
 import parrot.utils.StackReader;
 
@@ -13,10 +15,12 @@ import java.lang.reflect.Type;
 public class RecordingProxy<T> implements InvocationHandler {
     private final T t;
     private final CallerInfo proxyUsedFrom;
+    private final InvocationRecorder invocationRecorder;
 
     RecordingProxy(T t, CallerInfo proxyUsedFrom) {
         this.t = t;
         this.proxyUsedFrom = proxyUsedFrom;
+        this.invocationRecorder = new InvocationRecorderImpl();
     }
 
     public T getProxy(Class<T> classToStub){
@@ -39,13 +43,12 @@ public class RecordingProxy<T> implements InvocationHandler {
         String resultStr = gson.toJson(result);
         String className = t.getClass().getSimpleName();
         Type genericReturnType = method.getGenericReturnType();
+        Type[] parameterTypes = method.getGenericParameterTypes();
         CallerInfo callerInfo = new CallerInfo(className, method.getName());
-        InvocationInfo invocationInfo = InvocationInfo.of(proxyUsedFrom, callerInfo, args);
-//            if(genericReturnType.toString().equals("java.util.Map<java.lang.String, java.util.List<java.lang.String>>")){
-//                String json = "{\"name\":[\"123\", \"456\"]}";
-//                Map<String, List<String>> ret = gson.fromJson(json, genericReturnType);
-//                System.out.println(ret);
-//            }
+        InvocationInfo invocationInfo = InvocationInfo.of(proxyUsedFrom,
+                callerInfo,
+                parameterTypes,
+                args);
         System.out.println(invocationInfo);
         System.out.println(genericReturnType);
         Object result2 = gson.fromJson(resultStr, genericReturnType);
@@ -55,6 +58,7 @@ public class RecordingProxy<T> implements InvocationHandler {
             System.out.println(result2.toString());
             System.out.println(result2.getClass().toGenericString());
         }
+        invocationRecorder.save(invocationInfo, result);
         return result2;
     }
 }
