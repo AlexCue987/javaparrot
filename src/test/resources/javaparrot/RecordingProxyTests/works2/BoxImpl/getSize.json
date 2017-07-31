@@ -1,0 +1,13 @@
+[
+  {
+    "proxyUsedFrom": {
+      "simpleClassName": "RecordingProxyTests",
+      "methodName": "works2"
+    },
+    "callerInfo": {
+      "simpleClassName": "BoxImpl",
+      "methodName": "getSize"
+    },
+    "queryParameters": []
+  }
+]

@@ -9,5 +9,16 @@
       "methodName": "getSize"
     },
     "queryParameters": []
+  },
+  {
+    "proxyUsedFrom": {
+      "simpleClassName": "InvocationRecorderImplTests",
+      "methodName": "works2"
+    },
+    "callerInfo": {
+      "simpleClassName": "BoxImpl",
+      "methodName": "getSize"
+    },
+    "queryParameters": []
   }
 ]
