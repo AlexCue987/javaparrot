@@ -15,11 +15,7 @@ public class CreateTests {
     @Test
     public void works() throws ClassNotFoundException {
         Gson gson = new Gson();
-        Map<String, Object> attributes1 = new HashMap<>(2);
-        attributes1.put("name", "box");
-        attributes1.put("barCode", "123123");
-        List<String> names1 = Arrays.asList("my best box", "box #1");
-        NestedThing nestedThing = new NestedThing(names1, attributes1);
+        NestedThing nestedThing = getNestedThing();
         Map<String, String> messageToSend = new HashMap<>(2);
         String name = nestedThing.getClass().getName();
         messageToSend.put("type", name);
@@ -46,6 +42,14 @@ public class CreateTests {
         System.out.println(typedPayload);
     }
 
+    public static NestedThing getNestedThing() {
+        Map<String, Object> attributes1 = new HashMap<>(2);
+        attributes1.put("name", "box");
+        attributes1.put("barCode", "123123");
+        List<String> names1 = Arrays.asList("my best box", "box #1");
+        return new NestedThing(names1, attributes1);
+    }
+
     static Type getType(String typeName){
         try {
             Class<?> clazz = Class.forName(typeName);
@@ -58,11 +62,7 @@ public class CreateTests {
 
     @Test
     public void works2() throws ClassNotFoundException {
-        Map<String, Object> attributes1 = new HashMap<>(2);
-        attributes1.put("name", "box");
-        attributes1.put("barCode", "123123");
-        List<String> names1 = Arrays.asList("my best box", "box #1");
-        NestedThing nestedThing = new NestedThing(names1, attributes1);
+        NestedThing nestedThing = getNestedThing();
         Map<String, Object> messageToSend = new HashMap<>(2);
         String name = nestedThing.getClass().getName();
         messageToSend.put("type", name);

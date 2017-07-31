@@ -3,10 +3,12 @@ import java.util.List;
 import java.util.Map;
 
 public class NestedThing {
-    private final List<String> names;
-    private final Map<String, Object> attributes;
+    private List<String> names;
+    private Map<String, Object> attributes;
 
-    NestedThing(List<String> names, Map<String, Object> attributes) {
+    public NestedThing(){}
+
+    public NestedThing(List<String> names, Map<String, Object> attributes) {
         this.names = names;
         this.attributes = attributes;
     }

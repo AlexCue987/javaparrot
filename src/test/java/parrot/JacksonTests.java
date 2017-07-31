@@ -38,6 +38,7 @@ public class JacksonTests {
         value.add("Some String");
         value.add(123L);
         value.add(345);
+        value.add(CreateTests.getNestedThing());
         return value;
     }
 
