@@ -8,8 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class JacksonTests {
     @Test
@@ -39,7 +38,16 @@ public class JacksonTests {
         value.add(123L);
         value.add(345);
         value.add(CreateTests.getNestedThing());
+        value.add(getVeryNestedThing());
         return value;
+    }
+
+    VeryNestedThing getVeryNestedThing(){
+        NestedThing nestedThing = CreateTests.getNestedThing();
+        List<NestedThing> list = Arrays.asList(nestedThing);
+        Map<String, NestedThing> map = new HashMap<>(1);
+        map.put("my key", nestedThing);
+        return new VeryNestedThing(list, map);
     }
 
 }
