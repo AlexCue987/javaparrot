@@ -31,6 +31,11 @@ public class JacksonTests {
         }
     }
 
+    @Test
+    public void mapTest(){
+
+    }
+
 
     private List<Object> getList() {
         List<Object> value = new ArrayList<>(3);

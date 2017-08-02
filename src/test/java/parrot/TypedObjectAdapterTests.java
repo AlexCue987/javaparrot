@@ -2,6 +2,7 @@ package parrot;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class TypedObjectAdapterTests {
             registerTypeHierarchyAdapter(Object.class, new TypedObjectAdapter()).
             create();
 
+    @Ignore
     @Test
     public void works(){
         List<Object> value = getList();

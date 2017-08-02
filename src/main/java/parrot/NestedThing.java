@@ -28,4 +28,22 @@ public class NestedThing {
                 ",\n attributes=" + attributes +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NestedThing that = (NestedThing) o;
+
+        if (!names.equals(that.names)) return false;
+        return attributes.equals(that.attributes);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = names.hashCode();
+        result = 31 * result + attributes.hashCode();
+        return result;
+    }
 }

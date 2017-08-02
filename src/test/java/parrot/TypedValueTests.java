@@ -1,12 +1,14 @@
 package parrot;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TypedValueTests {
+    @Ignore
     @Test
     public void worksForList(){
         List<Object> value = getList();
