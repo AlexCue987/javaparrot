@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class InvocationInfoTests {
-    private final String QUERY_PARAMETERS_STR = "NameValuePair(declaredTypeName=java.lang.String, value=My String, submittedTypeName=java.lang.String)\n" +
-            "NameValuePair(declaredTypeName=java.lang.Integer, value=42, submittedTypeName=java.lang.Integer)\n" +
-            "NameValuePair(declaredTypeName=java.lang.Object, value=123, submittedTypeName=java.lang.Long)";
+    private final String QUERY_PARAMETERS_STR = "MethodCallParameter(declaredType=java.lang.String, submittedValue=My String)\n" +
+            "MethodCallParameter(declaredType=java.lang.Integer, submittedValue=42)\n" +
+            "MethodCallParameter(declaredType=java.lang.Object, submittedValue=123)";
 
     @Test
     public void convertArgs_works(){
@@ -20,13 +20,13 @@ public class InvocationInfoTests {
         Type intType = new TypeToken<Integer>(){}.getType();
         Type longType = new TypeToken<Object>(){}.getType();
         Type[] argTypes = {stringType, intType, longType};
-        List<NameValuePair> queryParameters = InvocationInfo.toQueryParameters(argTypes, args);
+        List<MethodCallParameter> queryParameters = InvocationInfo.toQueryParameters(argTypes, args);
         String actual = queryParametersToString(queryParameters);
         System.out.println(actual);
         Assert.assertEquals(QUERY_PARAMETERS_STR, actual);
     }
 
-    private String queryParametersToString(List<NameValuePair> queryParameters) {
+    private String queryParametersToString(List<MethodCallParameter> queryParameters) {
         return queryParameters.stream().
                 map(Object::toString).
                 collect(Collectors.joining("\n"));

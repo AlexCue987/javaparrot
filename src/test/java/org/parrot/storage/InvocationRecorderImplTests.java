@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.parrot.InvocationInfo;
-import org.parrot.NameValuePair;
+import org.parrot.MethodCallParameter;
 import org.parrot.recorder.RecordingProxy;
 import org.parrot.utils.CallerInfo;
 
@@ -23,7 +23,7 @@ public class InvocationRecorderImplTests {
 
     @Test
     public void getFileName_works(){
-        List<NameValuePair> queryParameters = new ArrayList<>();
+        List<MethodCallParameter> queryParameters = new ArrayList<>();
         final InvocationInfo invocationInfo = new InvocationInfo(proxyUsedFrom, callerInfo, queryParameters);
         String actual = invocationRecorder.getFileName(invocationInfo);
         Assert.assertEquals("src/test/resources/javaparrot/TestClass/TestMethod/StubbedClass/StubbedMethod.json", actual.toString());
@@ -47,9 +47,9 @@ public class InvocationRecorderImplTests {
     public void works(){
         CallerInfo proxyUsedFrom = new CallerInfo("MyProxyClass", "myProxyMethod");
         CallerInfo callerInfo = new CallerInfo("MyClass", "myMethod");
-        ArrayList<NameValuePair> queryParameters = new ArrayList<>(2);
-        queryParameters.add(new NameValuePair("length", new Integer(5), Integer.class.getName()));
-        queryParameters.add(new NameValuePair("weight", new BigDecimal("1.2"), BigDecimal.class.getName()));
+        ArrayList<MethodCallParameter> queryParameters = new ArrayList<>(2);
+        queryParameters.add(new MethodCallParameter("Integer", new Integer(5)));
+        queryParameters.add(new MethodCallParameter("BigDecimal", new BigDecimal("1.2")));
         InvocationInfo info = new InvocationInfo(proxyUsedFrom, callerInfo, queryParameters);
         InvocationRecorderImpl recorder = new InvocationRecorderImpl();
         recorder.save(info, "results");
