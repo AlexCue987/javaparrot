@@ -1,0 +1,12 @@
+[ [ "org.parrot.MethodCall", {
+  "parameters" : [ {
+    "declaredType" : "java.lang.Object",
+    "submittedValue" : [ "org.parrot.recorder.BoxImpl", {
+      "size" : 0
+    } ]
+  }, {
+    "declaredType" : "java.lang.Object",
+    "submittedValue" : [ "java.lang.Long", 1234 ]
+  } ],
+  "result" : 40
+} ] ]

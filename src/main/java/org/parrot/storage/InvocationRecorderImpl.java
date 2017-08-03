@@ -1,9 +1,14 @@
 package org.parrot.storage;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.parrot.InvocationInfo;
+import org.parrot.MethodCall;
 import org.parrot.utils.CallerInfo;
 import org.parrot.utils.FileSystemFolder;
 import org.parrot.utils.FileSystemFolderImpl;
@@ -29,24 +34,30 @@ public class InvocationRecorderImpl implements InvocationRecorder {
     @Override
     public void save(InvocationInfo invocationInfo, Object result) {
         String fileName = getFileName(invocationInfo);
-        List<InvocationInfo> invocationInfoList = getPreviousInvocations(fileName);
-        invocationInfoList.add(invocationInfo);
+        List<MethodCall> invocationInfoList = getPreviousInvocations(fileName);
+        invocationInfoList.add(invocationInfo.getMethodCall());
         saveInvocations(fileName, invocationInfoList);
     }
 
-    private List<InvocationInfo> getPreviousInvocations(String fileName) {
+    private List<MethodCall> getPreviousInvocations(String fileName) {
         String defaultValue = "[]";
         String fileContents = fileSystemFolder.readFromFileWithDefaultValue(fileName, defaultValue);
         return parseJson(fileContents);
     }
 
-    private void saveInvocations(String fileName, List<InvocationInfo> invocationInfoList) {
-        Gson gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .disableHtmlEscaping()
-                .create();
-        String newContentsToSave = gson.toJson(invocationInfoList);
-        fileSystemFolder.saveToFile(fileName, newContentsToSave);
+    private void saveInvocations(String fileName, List<MethodCall> invocationInfoList){
+        ObjectMapper mapper = new ObjectMapper();
+
+        // enable pretty printing
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, JsonTypeInfo.As.WRAPPER_ARRAY);
+        mapper.registerSubtypes(String.class, Integer.class);
+        try {
+            String newContentsToSave = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(invocationInfoList);
+            fileSystemFolder.saveToFile(fileName, newContentsToSave);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     String getFileName(InvocationInfo invocationInfo){
@@ -68,10 +79,10 @@ public class InvocationRecorderImpl implements InvocationRecorder {
     }
 
 
-    public List<InvocationInfo> parseJson(String json) {
-        Type type = new TypeToken<List<InvocationInfo>>(){}.getType();
+    public List<MethodCall> parseJson(String json) {
+        Type type = new TypeToken<List<MethodCall>>(){}.getType();
         Gson gson = new Gson();
-        List<InvocationInfo> invocationInfoList = gson.fromJson(json, type);
+        List<MethodCall> invocationInfoList = gson.fromJson(json, type);
         return invocationInfoList;
     }
 }

@@ -1,0 +1,9 @@
+[ [ "org.parrot.MethodCall", {
+  "parameters" : [ {
+    "declaredType" : "java.lang.String",
+    "submittedValue" : "Opps!"
+  } ],
+  "result" : [ "org.parrot.recorder.MyResult", {
+    "r" : 5
+  } ]
+} ] ]

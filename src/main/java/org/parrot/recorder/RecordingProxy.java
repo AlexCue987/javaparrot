@@ -48,7 +48,8 @@ public class RecordingProxy<T> implements InvocationHandler {
         InvocationInfo invocationInfo = InvocationInfo.of(proxyUsedFrom,
                 callerInfo,
                 parameterTypes,
-                args);
+                args,
+                result);
         System.out.println(invocationInfo);
         System.out.println(genericReturnType);
         Object result2 = gson.fromJson(resultStr, genericReturnType);

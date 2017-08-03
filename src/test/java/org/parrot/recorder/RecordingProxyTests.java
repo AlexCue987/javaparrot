@@ -19,15 +19,17 @@ public class RecordingProxyTests {
         box.getSize();
     }
 
-    interface Box{
-        int getSize();
+    @Test
+    public void concat(){
+        Concatenator concatenator = RecordingProxy.getProxy(new ConcatenatorImpl(), Concatenator.class);
+        concatenator.concatLen(new BoxImpl(), new Long(1234L));
+        concatenator.getMyResult("Opps!");
     }
 
-    class BoxImpl implements Box{
-
-        @Override
-        public int getSize() {
-            return 0;
-        }
+    @Test
+    public void list(){
+        Concatenator concatenator = RecordingProxy.getProxy(new ConcatenatorImpl(), Concatenator.class);
+        concatenator.join(123L, "Why?");
     }
+
 }

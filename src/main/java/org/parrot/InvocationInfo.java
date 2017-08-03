@@ -18,14 +18,16 @@ public class InvocationInfo {
     private final CallerInfo callerInfo;
 
     @NonNull
-    private final List<MethodCallParameter> queryParameters;
+    private final MethodCall methodCall;
 
     public static InvocationInfo of(CallerInfo proxyUsedFrom,
                                     CallerInfo callerInfo,
                                     Type[] argTypes,
-                                    Object[] argValues){
+                                    Object[] argValues,
+                                    Object result){
         List<MethodCallParameter> queryParameters = toQueryParameters(argTypes, argValues);
-        return new InvocationInfo(proxyUsedFrom, callerInfo, queryParameters);
+        MethodCall methodCall  =new MethodCall(queryParameters, result);
+        return new InvocationInfo(proxyUsedFrom, callerInfo, methodCall);
     }
 
     static List<MethodCallParameter> toQueryParameters(Type[] argTypes,
@@ -35,8 +37,6 @@ public class InvocationInfo {
         }
         List<MethodCallParameter> ret = new ArrayList<>(argTypes.length);
         for(int i=0; i<argTypes.length; i++){
-            String s1 = argTypes[i].getTypeName();
-            String s2 = argTypes[i].getClass().getName();
             MethodCallParameter pair = new MethodCallParameter(argTypes[i].getTypeName(), argValues[i]);
             ret.add(pair);
         }
