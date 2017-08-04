@@ -1,10 +1,14 @@
 package org.parrot;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Test;
+import org.parrot.recorder.MyResult;
+import org.parrot.recorder.MyResultList;
 
 import java.io.IOException;
 import java.util.*;
@@ -31,10 +35,23 @@ public class JacksonTests {
     }
 
     @Test
-    public void mapTest(){
-
+    public void doesNotSaveNestedTypes() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, JsonTypeInfo.As.WRAPPER_ARRAY);
+        mapper.registerSubtypes(MyResultList.class, MyResult.class);
+        ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+        MyResultList myResultList = getMyResultList();
+        String json = objectWriter.writeValueAsString(myResultList);
+        System.out.println(json);
     }
 
+    private MyResultList getMyResultList(){
+        List<MyResult> myList = new ArrayList<>(3);
+        myList.add(new MyResult(1));
+        myList.add(new MyResult(2));
+        return new MyResultList(myList);
+    }
 
     private List<Object> getList() {
         List<Object> value = new ArrayList<>(3);

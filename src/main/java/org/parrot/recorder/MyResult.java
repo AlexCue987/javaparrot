@@ -2,8 +2,8 @@ package org.parrot.recorder;
 
 public class MyResult {
     private int r;
-    MyResult(){}
-    MyResult(int r){this.r = r;}
+    public MyResult(){}
+    public MyResult(int r){this.r = r;}
 
     public int getR() {
         return r;

@@ -2,6 +2,7 @@ package org.parrot.storage;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
@@ -9,10 +10,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.parrot.InvocationInfo;
 import org.parrot.MethodCall;
+import org.parrot.recorder.MyResult;
+import org.parrot.recorder.MyResultList;
 import org.parrot.utils.CallerInfo;
 import org.parrot.utils.FileSystemFolder;
 import org.parrot.utils.FileSystemFolderImpl;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,18 +50,23 @@ public class InvocationRecorderImpl implements InvocationRecorder {
     }
 
     private void saveInvocations(String fileName, List<MethodCall> invocationInfoList){
-        ObjectMapper mapper = new ObjectMapper();
-
-        // enable pretty printing
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, JsonTypeInfo.As.WRAPPER_ARRAY);
-        mapper.registerSubtypes(String.class, Integer.class);
+        ObjectMapper mapper = getObjectMapper();
         try {
             String newContentsToSave = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(invocationInfoList);
             fileSystemFolder.saveToFile(fileName, newContentsToSave);
         }catch (Exception e){
             throw new RuntimeException(e);
         }
+    }
+
+    private ObjectMapper getObjectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        // enable pretty printing
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, JsonTypeInfo.As.WRAPPER_ARRAY);
+        mapper.registerSubtypes(String.class, Integer.class, MyResult.class, MyResultList.class);
+        return mapper;
     }
 
     String getFileName(InvocationInfo invocationInfo){
@@ -78,11 +87,12 @@ public class InvocationRecorderImpl implements InvocationRecorder {
         return fullPath;
     }
 
-
     public List<MethodCall> parseJson(String json) {
-        Type type = new TypeToken<List<MethodCall>>(){}.getType();
-        Gson gson = new Gson();
-        List<MethodCall> invocationInfoList = gson.fromJson(json, type);
-        return invocationInfoList;
+        ObjectMapper mapper = getObjectMapper();
+        try {
+            return mapper.readValue(json, new TypeReference<List<MethodCall>>(){});
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
