@@ -54,6 +54,17 @@ public class TypedInstanceFactoryTests {
     }
 
     @Test
+    public void ofList_handlesNull(){
+        TypedField typedField = new TypedInstanceFactory().ofList(null);
+        String json = gson.toJson(typedField);
+        System.out.println(json);
+        String expected = "{\n" +
+                "  \"type\": \"java.util.List\"\n" +
+                "}";
+        Assert.assertEquals(expected, json);
+    }
+
+    @Test
     public void ofMap_handlesNull(){
         TypedField typedField = new TypedInstanceFactory().ofMap(null);
         String json = gson.toJson(typedField);

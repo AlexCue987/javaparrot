@@ -55,10 +55,10 @@ public class TypedInstanceFactory {
     }
 
     public TypedField ofList(List list){
-        String typeName = list.getClass().getTypeName();
         if(list == null){
-            return new TypedField(typeName, null);
+            return new TypedField(List.class.getName(), null);
         }
+        String typeName = list.getClass().getTypeName();
         List<TypedInstance> values = new ArrayList<>();
         for(Object o: list){
             TypedInstance typedInstance = of(o);
