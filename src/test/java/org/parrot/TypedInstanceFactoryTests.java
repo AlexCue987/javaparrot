@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class TypedInstanceFactoryTests {
@@ -28,6 +29,29 @@ public class TypedInstanceFactoryTests {
         System.out.println(instance);
         String json = gson.toJson(instance);
         System.out.println(json);
+    }
+
+    @Test
+    public void worksWithItem(){
+        TypedInstance instance = new TypedInstanceFactory().of(new Item("small blue item"));
+        System.out.println(instance);
+        String json = gson.toJson(instance);
+        System.out.println(json);
+
+    }
+
+    @Test
+    public void getFieldsToSave_handlesInteger(){
+        List<Field> fields = new TypedInstanceFactory().getFieldsToSave(new Integer(123));
+//        fields.forEach(System.out::println);
+        Assert.assertEquals("[private final int java.lang.Integer.value]", fields.toString());
+    }
+
+    @Test
+    public void getFieldsToSave_handlesLong(){
+        List<Field> fields = new TypedInstanceFactory().getFieldsToSave(new Long(1234L));
+//        fields.forEach(System.out::println);
+        Assert.assertEquals("[private final long java.lang.Long.value]", fields.toString());
     }
 
     @Test

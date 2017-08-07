@@ -2,6 +2,7 @@ package org.parrot;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TypedInstanceFactory {
     private final static List<Class<?>> primitiveTypes = Arrays.asList(
@@ -9,8 +10,8 @@ public class TypedInstanceFactory {
             int.class,
             long.class,
             double.class,
-            Integer.class,
-            Long.class,
+//            Integer.class,
+//            Long.class,
             String.class
     );
 
@@ -22,10 +23,8 @@ public class TypedInstanceFactory {
         if(primitiveTypes.contains(objectType)){
             return new TypedInstance(new TypedField(objectType.toString(), o));
         }
-        Field[] fields = o.getClass().getDeclaredFields();
-        List<TypedField> values = new ArrayList<>(fields.length);
-        for(int i=0; i<fields.length; i++){
-            Field field = fields[i];
+        List<TypedField> values = new ArrayList<>();
+        for(Field field : getFieldsToSave(o)){
             field.setAccessible(true);
             Object value = getObject(o, field);
             Class<?> type = field.getType();
@@ -50,6 +49,22 @@ public class TypedInstanceFactory {
             values.add(new TypedField(type.getName(), typedInstance));
         }
         return new TypedInstance(o.getClass().getTypeName(), values);
+    }
+
+    public List<Field> getFieldsToSave(Object o){
+        Field[] fields = o.getClass().getDeclaredFields();
+//        for(int i=0; i<fields.length; i++){
+//            Field field = fields[i];
+//            if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
+//                System.out.println("STATIC");
+//            }
+//            System.out.println(field);
+//        }
+        return Arrays.stream(fields).
+                filter(field -> !field.isEnumConstant() &&
+                        !field.isSynthetic() &&
+                        !java.lang.reflect.Modifier.isStatic(field.getModifiers())).
+                collect(Collectors.toList());
     }
 
     public Object getObject(Object o, Field field) {
