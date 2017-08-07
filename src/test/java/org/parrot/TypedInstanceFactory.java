@@ -9,6 +9,8 @@ public class TypedInstanceFactory {
             int.class,
             long.class,
             double.class,
+            Integer.class,
+            Long.class,
             String.class
     );
 
@@ -39,8 +41,12 @@ public class TypedInstanceFactory {
                 values.add(ofMap((Map)value));
                 continue;
             }
+            if(value instanceof Set){
+                values.add(ofSet((Set)value));
+                continue;
+            }
             TypedInstance typedInstance = (value == null) ? null : of(value);
-            System.out.println("Non-primitive:" + type);
+//            System.out.println("Non-primitive:" + type);
             values.add(new TypedField(type.getName(), typedInstance));
         }
         return new TypedInstance(o.getClass().getTypeName(), values);
@@ -61,6 +67,19 @@ public class TypedInstanceFactory {
         String typeName = list.getClass().getTypeName();
         List<TypedInstance> values = new ArrayList<>();
         for(Object o: list){
+            TypedInstance typedInstance = of(o);
+            values.add(typedInstance);
+        }
+        return new TypedField(typeName, values);
+    }
+
+    public TypedField ofSet(Set set){
+        if(set == null){
+            return new TypedField(Set.class.getName(), null);
+        }
+        String typeName = set.getClass().getTypeName();
+        Set<TypedInstance> values = new HashSet<>();
+        for(Object o: set){
             TypedInstance typedInstance = of(o);
             values.add(typedInstance);
         }
