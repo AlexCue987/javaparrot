@@ -21,7 +21,7 @@ public class TypedInstanceFactory {
         }
         Class<?> objectType = o.getClass();
         if(primitiveTypes.contains(objectType)){
-            return new TypedInstance(new TypedField(objectType.toString(), o));
+            return new TypedInstance(new TypedField(objectType.toString(), true, o));
         }
         List<TypedField> values = new ArrayList<>();
         for(Field field : getFieldsToSave(o)){
@@ -29,7 +29,7 @@ public class TypedInstanceFactory {
             Object value = getObject(o, field);
             Class<?> type = field.getType();
             if(primitiveTypes.contains(type)) {
-                values.add(new TypedField(type.getName(), value));
+                values.add(new TypedField(type.getName(), true, value));
                 continue;
             }
             if(value instanceof List){
@@ -46,7 +46,7 @@ public class TypedInstanceFactory {
             }
             TypedInstance typedInstance = (value == null) ? null : of(value);
 //            System.out.println("Non-primitive:" + type);
-            values.add(new TypedField(type.getName(), typedInstance));
+            values.add(new TypedField(type.getName(), false, typedInstance));
         }
         return new TypedInstance(o.getClass().getTypeName(), values);
     }
@@ -77,7 +77,7 @@ public class TypedInstanceFactory {
 
     public TypedField ofList(List list){
         if(list == null){
-            return new TypedField(List.class.getName(), null);
+            return new TypedField(List.class.getName(), false, null);
         }
         String typeName = list.getClass().getTypeName();
         List<TypedInstance> values = new ArrayList<>();
@@ -85,12 +85,12 @@ public class TypedInstanceFactory {
             TypedInstance typedInstance = of(o);
             values.add(typedInstance);
         }
-        return new TypedField(typeName, values);
+        return new TypedField(typeName, false, values);
     }
 
     public TypedField ofSet(Set set){
         if(set == null){
-            return new TypedField(Set.class.getName(), null);
+            return new TypedField(Set.class.getName(), false, null);
         }
         String typeName = set.getClass().getTypeName();
         Set<TypedInstance> values = new HashSet<>();
@@ -98,12 +98,12 @@ public class TypedInstanceFactory {
             TypedInstance typedInstance = of(o);
             values.add(typedInstance);
         }
-        return new TypedField(typeName, values);
+        return new TypedField(typeName, false, values);
     }
 
     public TypedField ofMap(Map map){
         if(map == null){
-            return new TypedField(Map.class.getName(), null);
+            return new TypedField(Map.class.getName(), false, null);
         }
         String typeName = map.getClass().getTypeName();
         List<TypedMapEntry> typedMapEntries = new ArrayList<>();
@@ -112,6 +112,6 @@ public class TypedInstanceFactory {
             TypedInstance typedValue = of(map.get(key));
             typedMapEntries.add(new TypedMapEntry(typedKey, typedValue));
         }
-        return new TypedField(typeName, typedMapEntries);
+        return new TypedField(typeName, false, typedMapEntries);
     }
 }

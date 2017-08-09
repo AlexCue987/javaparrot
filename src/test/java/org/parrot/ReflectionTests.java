@@ -79,7 +79,8 @@ public class ReflectionTests {
             Object value = field.get(o);
             System.out.println(field);
             System.out.println(value);
-            values.add(new TypedField(field.getType().getName(), value));
+            //todo: support nested here
+            values.add(new TypedField(field.getType().getName(), true, value));
         }
         return new TypedInstance(o.getClass().getTypeName(), values);
     }

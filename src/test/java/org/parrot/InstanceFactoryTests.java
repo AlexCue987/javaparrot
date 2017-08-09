@@ -1,5 +1,6 @@
 package org.parrot;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 public class InstanceFactoryTests {
@@ -8,13 +9,17 @@ public class InstanceFactoryTests {
             "  \"fields\": [\n" +
             "    {\n" +
             "      \"type\": \"java.lang.String\",\n" +
+            "      \"primitive\": true,\n" +
             "      \"value\": \"small blue item\"\n" +
             "    }\n" +
             "  ]\n" +
-            "}\n";
+            "}";
 
     @Test
     public void works(){
-        new InstanceFactory().of(simpleObjectJson);
+        InstanceFactory instanceFactory = new InstanceFactory();
+        Object actual = instanceFactory.of(simpleObjectJson);
+//        System.out.println(actual);
+        Assert.assertEquals("Item(itemName=small blue item)", actual.toString());
     }
 }
