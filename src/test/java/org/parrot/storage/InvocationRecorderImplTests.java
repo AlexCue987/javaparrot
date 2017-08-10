@@ -58,6 +58,7 @@ public class InvocationRecorderImplTests {
         recorder.save(info, "results");
     }
 
+    @Ignore
     @Test
     public void works2(){
         Box box = RecordingProxy.getProxy(new BoxImpl(), Box.class);

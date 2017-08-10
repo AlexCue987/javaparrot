@@ -16,7 +16,7 @@ public class InstanceFactory {
         Gson gson = new Gson();
         Type type = new TypeToken<Map<String, Object>>() {}.getType();
         Map<String, Object> map = gson.fromJson(json, type);
-        System.out.println(map);
+//        System.out.println(map);
         return ofMap(map);
     }
 
@@ -29,17 +29,29 @@ public class InstanceFactory {
         for(int i=0; i<fieldsToPopulate.size(); i++){
             Field field = fieldsToPopulate.get(i);
             field.setAccessible(true);
-            Map<String, Object> fieldValue = fieldValues.get(i);
-            System.out.println(field);
+            String fieldname = field.getName();
+            Map<String, Object> fieldValue = getFieldValue(fieldValues, fieldname);
+//            System.out.println(field);
             String fieldType = fieldValue.get("type").toString();
             if(fieldValue.get("primitive").toString().equals("true")){
                 try {
-                    field.set(instance, fieldValue.get("value"));
+                    String value = fieldValue.get("value").toString();
+                    String name = fieldType.equals("java.lang.String") ? "STRING" : fieldType.toUpperCase();
+                    PrimitiveType primitiveType = PrimitiveType.valueOf(name);
+                    Object of = primitiveType.of(value);
+                    field.set(instance, of);
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
         return instance;
+    }
+
+    public Map<String, Object> getFieldValue(List<Map<String, Object>> fieldValues,
+                                             String fieldName) {
+        Map<String, Object> ret = fieldValues.stream().
+                filter(t -> fieldName.equals(t.get("name"))).findFirst().get();
+        return ret;
     }
 }

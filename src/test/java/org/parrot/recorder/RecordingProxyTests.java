@@ -1,10 +1,12 @@
 package org.parrot.recorder;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.parrot.utils.CallerInfo;
 import org.parrot.utils.StackReader;
 
 public class RecordingProxyTests {
+    @Ignore
     @Test
     public void works(){
         CallerInfo callerInfo = StackReader.getCallerInfo(0);
@@ -13,12 +15,14 @@ public class RecordingProxyTests {
         box.getSize();
     }
 
+    @Ignore
     @Test
     public void works2(){
         Box box = RecordingProxy.getProxy(new BoxImpl(), Box.class);
         box.getSize();
     }
 
+    @Ignore
     @Test
     public void concat(){
         Concatenator concatenator = RecordingProxy.getProxy(new ConcatenatorImpl(), Concatenator.class);
@@ -26,6 +30,7 @@ public class RecordingProxyTests {
         concatenator.getMyResult("Opps!");
     }
 
+    @Ignore
     @Test
     public void list(){
         Concatenator concatenator = RecordingProxy.getProxy(new ConcatenatorImpl(), Concatenator.class);

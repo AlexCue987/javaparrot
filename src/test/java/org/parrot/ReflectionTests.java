@@ -1,5 +1,6 @@
 package org.parrot;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
@@ -47,6 +48,7 @@ public class ReflectionTests {
         System.out.println(o);
     }
 
+    @Ignore
     @Test
     public void t1() throws ClassNotFoundException, IllegalAccessException {
         Objenesis objenesis = new ObjenesisStd();
@@ -80,7 +82,7 @@ public class ReflectionTests {
             System.out.println(field);
             System.out.println(value);
             //todo: support nested here
-            values.add(new TypedField(field.getType().getName(), true, value));
+            values.add(new TypedField(field.getType().getName(), field.getName(), true, value));
         }
         return new TypedInstance(o.getClass().getTypeName(), values);
     }

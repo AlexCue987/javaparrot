@@ -113,7 +113,7 @@ public class TypedInstanceFactoryTests {
 
     @Test
     public void ofList_handlesNull(){
-        TypedField typedField = new TypedInstanceFactory().ofList(null);
+        TypedField typedField = new TypedInstanceFactory().ofList(null, "list");
         String json = gson.toJson(typedField);
         System.out.println(json);
         String expected = "{\n" +
@@ -124,7 +124,7 @@ public class TypedInstanceFactoryTests {
 
     @Test
     public void ofMap_handlesNull(){
-        TypedField typedField = new TypedInstanceFactory().ofMap(null);
+        TypedField typedField = new TypedInstanceFactory().ofMap(null, "map");
         String json = gson.toJson(typedField);
         System.out.println(json);
         String expected = "{\n" +
@@ -138,7 +138,7 @@ public class TypedInstanceFactoryTests {
         Map<Object, Object> map = new HashMap<>();
         map.put(smallBox, "nothing");
         map.put("31.14159", mediumBox);
-        TypedField typedField = new TypedInstanceFactory().ofMap(map);
+        TypedField typedField = new TypedInstanceFactory().ofMap(map, "map");
         String json = gson.toJson(typedField);
         System.out.println(json);
         String expected = "{\n" +
@@ -237,7 +237,7 @@ public class TypedInstanceFactoryTests {
     @Test
     public void ofSet_handlesNulls(){
         Set<Object> set = null;
-        TypedField typedField = new TypedInstanceFactory().ofSet(set);
+        TypedField typedField = new TypedInstanceFactory().ofSet(set, "set");
         String json = gson.toJson(typedField);
         System.out.println(json);
         String expected = "{\n" +
@@ -251,7 +251,7 @@ public class TypedInstanceFactoryTests {
         Set<Object> set = new HashSet<>();
         set.add(new Long(12L));
         set.add(new Integer(34));
-        TypedField typedField = new TypedInstanceFactory().ofSet(set);
+        TypedField typedField = new TypedInstanceFactory().ofSet(set, "set");
         String json = gson.toJson(typedField);
         System.out.println(json);
         String expected = "{\n" +
