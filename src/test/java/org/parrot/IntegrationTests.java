@@ -15,9 +15,10 @@ public class IntegrationTests {
         String json = gson.toJson(typedInstance);
 //        System.out.println(json);
         InstanceFactory instanceFactory = new InstanceFactory();
-        Object obj = instanceFactory.of(json);
+        Object actual = instanceFactory.of(json);
 //        System.out.println(obj);
-        Assert.assertEquals("TypesTest(active=true, anInt=1, aLong=2, aDouble=3.4, aString=five)", obj.toString());
+        Assert.assertEquals("TypesTest(active=true, anInt=1, aLong=2, aDouble=3.4, aString=five)", actual.toString());
+        Assert.assertEquals(typesTest, actual);
     }
 
     @Test
@@ -28,11 +29,12 @@ public class IntegrationTests {
         TypedInstance typedInstance = typedInstanceFactory.of(nestedTypesTest);
         Gson gson = new Gson();
         String json = gson.toJson(typedInstance);
-        System.out.println(json);
+//        System.out.println(json);
         InstanceFactory instanceFactory = new InstanceFactory();
-        Object obj = instanceFactory.of(json);
+        Object actual = instanceFactory.of(json);
 //        System.out.println(obj.toString());
 //        System.out.println(obj.toString().replace(",", ",\n"));
-        Assert.assertEquals("NestedTypesTest(active=false, anInt=2, aLong=3, aDouble=4.5, aString=six, nestedTypesTest=NestedTypesTest(active=true, anInt=1, aLong=2, aDouble=3.4, aString=five, nestedTypesTest=null))", obj.toString());
+        Assert.assertEquals("NestedTypesTest(active=false, anInt=2, aLong=3, aDouble=4.5, aString=six, nestedTypesTest=NestedTypesTest(active=true, anInt=1, aLong=2, aDouble=3.4, aString=five, nestedTypesTest=null))", actual.toString());
+        Assert.assertEquals(nestedTypesTest, (NestedTypesTest)actual);
     }
 }
