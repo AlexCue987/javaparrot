@@ -34,18 +34,28 @@ public class InstanceFactory {
 //            System.out.println(field);
             String fieldType = fieldValue.get("type").toString();
             if(fieldValue.get("primitive").toString().equals("true")){
-                try {
-                    String value = fieldValue.get("value").toString();
-                    String name = fieldType.equals("java.lang.String") ? "STRING" : fieldType.toUpperCase();
-                    PrimitiveType primitiveType = PrimitiveType.valueOf(name);
-                    Object of = primitiveType.of(value);
-                    field.set(instance, of);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+                String value = fieldValue.get("value").toString();
+                String name = fieldType.equals("java.lang.String") ? "STRING" : fieldType.toUpperCase();
+                PrimitiveType primitiveType = PrimitiveType.valueOf(name);
+                Object of = primitiveType.of(value);
+                setField(field, instance, of);
+                continue;
             }
+            @SuppressWarnings("unchecked")
+            Map<String, Object> typedValueAsMap = (Map<String, Object>)fieldValue.get("value");
+            Object value = typedValueAsMap==null ? null : ofMap(typedValueAsMap);
+            setField(field, instance, value);
         }
         return instance;
+    }
+
+    public void setField(Field field, Object instance, Object object) {
+        try {
+            field.set(instance, object);
+            return;
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Map<String, Object> getFieldValue(List<Map<String, Object>> fieldValues,
