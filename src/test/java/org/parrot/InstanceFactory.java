@@ -5,9 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class InstanceFactory {
     private final EmptyInstanceFactory emptyInstanceFactory = new EmptyInstanceFactory();
@@ -48,6 +46,11 @@ public class InstanceFactory {
                 setField(field, instance, list);
                 continue;
             }
+            if(value instanceof Set){
+                Set set = ofSet((Set)value);
+                setField(field, instance, set);
+                continue;
+            }
             @SuppressWarnings("unchecked")
             Map<String, Object> typedValueAsMap = (Map<String, Object>) value;
             Object valueAsMap = typedValueAsMap==null ? null : ofMap(typedValueAsMap);
@@ -59,7 +62,20 @@ public class InstanceFactory {
     public List ofList(List list){
         List ret = new ArrayList(list.size());
         for(int i=0; i<list.size(); i++){
+            @SuppressWarnings("unchecked")
             Map<String, Object> map = (Map<String, Object>)list.get(i);
+            Object o = ofMap(map);
+            ret.add(o);
+        }
+        return ret;
+    }
+
+    public Set ofSet(Set set){
+        Set ret = new HashSet(set.size());
+        Object[] elements = set.toArray();
+        for(int i=0; i<set.size(); i++){
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>)elements[i];
             Object o = ofMap(map);
             ret.add(o);
         }

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.parrot.testobjects.Thing;
 import org.parrot.testobjects.TypesTest;
 import org.parrot.testobjects.WithListOfThings;
+import org.parrot.testobjects.WithSetOfThings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +72,17 @@ public class IntegrationTests {
         TypedInstance typedInstance = typedInstanceFactory.of(withListOfThings);
         String json = gson.toJson(typedInstance);
         Object actual = instanceFactory.of(json);
-        System.out.println(actual);
+//        System.out.println(actual);
         Assert.assertEquals(withListOfThings, actual);
+    }
+
+    @Test
+    public void recreatesWithSettOfThings_nullSet(){
+        WithSetOfThings withSetOfThings = new WithSetOfThings("with null list", 0, null);
+        TypedInstance typedInstance = typedInstanceFactory.of(withSetOfThings);
+        String json = gson.toJson(typedInstance);
+        Object actual = instanceFactory.of(json);
+//        System.out.println(actual);
+        Assert.assertEquals(withSetOfThings, actual);
     }
 }
