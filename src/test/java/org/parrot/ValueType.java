@@ -53,17 +53,31 @@ public enum ValueType {
             return ret;
         }
     },
+
     MAP{
         @Override
         public Object getValue(Field field, Object instance, Map<String, Object> fieldValue, InstanceFactory instanceFactory) {
-            Object value = fieldValue.get("value");
-            if(value == null){
+            Object typedValue = fieldValue.get("value");
+            if(typedValue == null){
                 return null;
             }
             Map<Object, Object> ret = new HashMap<>();
+            List list = (List)typedValue;
+            for(int i=0; i<list.size(); i++){
+                @SuppressWarnings("unchecked")
+                Map<String, Object> typedEntry = (Map<String, Object>)list.get(i);
+                @SuppressWarnings("unchecked")
+                Map<String, Object> entryKey = (Map<String, Object>)(typedEntry.get("key"));
+                @SuppressWarnings("unchecked")
+                Map<String, Object> entryValue = (Map<String, Object>)(typedEntry.get("value"));
+                Object key = instanceFactory.ofMap((Map<String, Object>) entryKey);
+                Object value = instanceFactory.ofMap((Map<String, Object>) entryValue);
+                ret.put(key, value);
+            }
             return ret;
         }
     },
+
     INSTANCE{
         @Override
         public Object getValue(Field field, Object instance, Map<String, Object> fieldValue, InstanceFactory instanceFactory) {

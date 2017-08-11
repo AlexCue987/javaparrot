@@ -123,4 +123,17 @@ public class IntegrationTests {
         System.out.println(actual);
         Assert.assertEquals(withMapOfThings, actual);
     }
+
+    @Test
+    public void recreatesWithSetOfThings_populatedMap(){
+        Map<Object, Object> map = new HashMap<>();
+        map.put(new Long(123L), "value");
+        map.put("key", 3.456);
+        WithMapOfThings withMapOfThings = new WithMapOfThings("with null list", 0, map);
+        TypedInstance typedInstance = typedInstanceFactory.of(withMapOfThings);
+        String json = gson.toJson(typedInstance);
+        Object actual = instanceFactory.of(json);
+        System.out.println(actual);
+        Assert.assertEquals(withMapOfThings, actual);
+    }
 }
