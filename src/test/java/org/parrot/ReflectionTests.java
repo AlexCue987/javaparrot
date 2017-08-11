@@ -5,9 +5,8 @@ import org.junit.Test;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 import org.objenesis.instantiator.ObjectInstantiator;
-import sun.reflect.ReflectionFactory;
+import org.parrot.testobjects.TypesTest;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class ReflectionTests {
     public void t1() throws ClassNotFoundException, IllegalAccessException {
         Objenesis objenesis = new ObjenesisStd();
         ClassLoader classLoader = ReflectionTests.class.getClassLoader();
-        Class clazz = classLoader.loadClass("org.parrot.TypesTest");
+        Class clazz = classLoader.loadClass("org.parrot.testobjects.TypesTest");
         ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(clazz);
         Object o = thingyInstantiator.newInstance();
         System.out.println(o.getClass().toString());

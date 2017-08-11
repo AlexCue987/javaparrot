@@ -2,8 +2,8 @@ package org.parrot;
 
 import com.google.gson.Gson;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.parrot.testobjects.TypesTest;
 
 public class IntegrationTests {
     @Test

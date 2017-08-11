@@ -1,4 +1,4 @@
-package org.parrot;
+package org.parrot.testobjects;
 
 import lombok.*;
 
@@ -6,15 +6,12 @@ import lombok.*;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class TypesTest {
-    @NonNull
+public class TypesNestedTest {
     private final boolean active;
-    @NonNull
     private final int anInt;
-    @NonNull
     private final long aLong;
-    @NonNull
     private final double aDouble;
     @NonNull
     private final String aString;
+    private final TypesNestedTest nestedTest;
 }
