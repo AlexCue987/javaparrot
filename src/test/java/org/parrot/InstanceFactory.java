@@ -41,13 +41,14 @@ public class InstanceFactory {
                 setField(field, instance, of);
                 continue;
             }
-            if(value instanceof List){
+            Class<?> fieldClass = getaClass(fieldType);
+            if(List.class.isAssignableFrom(fieldClass)){
                 List list = ofList((List) value);
                 setField(field, instance, list);
                 continue;
             }
-            if(value instanceof Set){
-                Set set = ofSet((Set)value);
+            if(Set.class.isAssignableFrom(fieldClass)){
+                Set set = ofSet((List)value);
                 setField(field, instance, set);
                 continue;
             }
@@ -59,7 +60,18 @@ public class InstanceFactory {
         return instance;
     }
 
+    public Class<?> getaClass(String fieldType)  {
+        try {
+            return Class.forName(fieldType);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List ofList(List list){
+        if(list == null){
+            return null;
+        }
         List ret = new ArrayList(list.size());
         for(int i=0; i<list.size(); i++){
             @SuppressWarnings("unchecked")
@@ -70,12 +82,14 @@ public class InstanceFactory {
         return ret;
     }
 
-    public Set ofSet(Set set){
-        Set ret = new HashSet(set.size());
-        Object[] elements = set.toArray();
-        for(int i=0; i<set.size(); i++){
+    public Set ofSet(List list){
+        if(list == null){
+            return null;
+        }
+        Set ret = new HashSet(list.size());
+        for(int i=0; i<list.size(); i++){
             @SuppressWarnings("unchecked")
-            Map<String, Object> map = (Map<String, Object>)elements[i];
+            Map<String, Object> map = (Map<String, Object>)list.get(i);
             Object o = ofMap(map);
             ret.add(o);
         }

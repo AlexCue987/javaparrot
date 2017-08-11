@@ -1,6 +1,5 @@
 package org.parrot;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,9 +8,7 @@ import org.parrot.testobjects.TypesTest;
 import org.parrot.testobjects.WithListOfThings;
 import org.parrot.testobjects.WithSetOfThings;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class IntegrationTests {
     TypedInstanceFactory typedInstanceFactory = new TypedInstanceFactory();
@@ -77,12 +74,35 @@ public class IntegrationTests {
     }
 
     @Test
-    public void recreatesWithSettOfThings_nullSet(){
+    public void recreatesWithSetOfThings_nullSet(){
         WithSetOfThings withSetOfThings = new WithSetOfThings("with null list", 0, null);
         TypedInstance typedInstance = typedInstanceFactory.of(withSetOfThings);
         String json = gson.toJson(typedInstance);
         Object actual = instanceFactory.of(json);
 //        System.out.println(actual);
+        Assert.assertEquals(withSetOfThings, actual);
+    }
+
+    @Test
+    public void recreatesWithSetOfThings_emptySet(){
+        Set<Thing> things = new HashSet<>();
+        WithSetOfThings withSetOfThings = new WithSetOfThings("with null list", 0, things);
+        TypedInstance typedInstance = typedInstanceFactory.of(withSetOfThings);
+        String json = gson.toJson(typedInstance);
+        Object actual = instanceFactory.of(json);
+//        System.out.println(actual);
+        Assert.assertEquals(withSetOfThings, actual);
+    }
+
+    @Test
+    public void recreatesWithSetOfThings_populatedSet(){
+        Set<Thing> things = new HashSet<>();
+        things.add(new Thing("box", 123));
+        WithSetOfThings withSetOfThings = new WithSetOfThings("with null list", 0, things);
+        TypedInstance typedInstance = typedInstanceFactory.of(withSetOfThings);
+        String json = gson.toJson(typedInstance);
+        Object actual = instanceFactory.of(json);
+        System.out.println(actual);
         Assert.assertEquals(withSetOfThings, actual);
     }
 }
