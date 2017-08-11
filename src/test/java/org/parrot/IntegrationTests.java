@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
+import org.parrot.testobjects.Thing;
 import org.parrot.testobjects.TypesTest;
 import org.parrot.testobjects.WithListOfThings;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class IntegrationTests {
     TypedInstanceFactory typedInstanceFactory = new TypedInstanceFactory();
@@ -41,6 +45,17 @@ public class IntegrationTests {
     @Test
     public void recreatesWithListOfThings_nullList(){
         WithListOfThings withListOfThings = new WithListOfThings("with null list", 0, null);
+        TypedInstance typedInstance = typedInstanceFactory.of(withListOfThings);
+        String json = gson.toJson(typedInstance);
+        Object actual = instanceFactory.of(json);
+//        System.out.println(actual);
+        Assert.assertEquals(withListOfThings, actual);
+    }
+
+    @Test
+    public void recreatesWithListOfThings_emptyList(){
+        List<Thing> things = new ArrayList<>();
+        WithListOfThings withListOfThings = new WithListOfThings("with null list", 0, things);
         TypedInstance typedInstance = typedInstanceFactory.of(withListOfThings);
         String json = gson.toJson(typedInstance);
         Object actual = instanceFactory.of(json);

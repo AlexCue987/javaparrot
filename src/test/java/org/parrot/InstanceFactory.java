@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,20 +34,36 @@ public class InstanceFactory {
             Map<String, Object> fieldValue = getFieldValue(fieldValues, fieldname);
 //            System.out.println(field);
             String fieldType = fieldValue.get("type").toString();
+            Object value = fieldValue.get("value");
             if(fieldValue.get("primitive").toString().equals("true")){
-                String value = fieldValue.get("value").toString();
+                String valueStr = value.toString();
                 String name = fieldType.equals("java.lang.String") ? "STRING" : fieldType.toUpperCase();
                 PrimitiveType primitiveType = PrimitiveType.valueOf(name);
-                Object of = primitiveType.of(value);
+                Object of = primitiveType.of(valueStr);
                 setField(field, instance, of);
                 continue;
             }
+            if(value instanceof List){
+                List list = ofList((List) value);
+                setField(field, instance, list);
+                continue;
+            }
             @SuppressWarnings("unchecked")
-            Map<String, Object> typedValueAsMap = (Map<String, Object>)fieldValue.get("value");
-            Object value = typedValueAsMap==null ? null : ofMap(typedValueAsMap);
-            setField(field, instance, value);
+            Map<String, Object> typedValueAsMap = (Map<String, Object>) value;
+            Object valueAsMap = typedValueAsMap==null ? null : ofMap(typedValueAsMap);
+            setField(field, instance, valueAsMap);
         }
         return instance;
+    }
+
+    public List ofList(List list){
+        List ret = new ArrayList(list.size());
+        for(int i=0; i<list.size(); i++){
+            Map<String, Object> map = (Map<String, Object>)list.get(i);
+            Object o = ofMap(map);
+            ret.add(o);
+        }
+        return ret;
     }
 
     public void setField(Field field, Object instance, Object object) {
