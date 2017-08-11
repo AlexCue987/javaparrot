@@ -31,31 +31,35 @@ public class InstanceFactory {
             String fieldname = field.getName();
             Map<String, Object> fieldValue = getFieldValue(fieldValues, fieldname);
 //            System.out.println(field);
-            String fieldType = fieldValue.get("type").toString();
-            Object value = fieldValue.get("value");
-            if(fieldValue.get("primitive").toString().equals("true")){
-                String valueStr = value.toString();
-                String name = fieldType.equals("java.lang.String") ? "STRING" : fieldType.toUpperCase();
-                PrimitiveType primitiveType = PrimitiveType.valueOf(name);
-                Object of = primitiveType.of(valueStr);
-                setField(field, instance, of);
-                continue;
-            }
-            Class<?> fieldClass = getaClass(fieldType);
-            if(List.class.isAssignableFrom(fieldClass)){
-                List list = ofList((List) value);
-                setField(field, instance, list);
-                continue;
-            }
-            if(Set.class.isAssignableFrom(fieldClass)){
-                Set set = ofSet((List)value);
-                setField(field, instance, set);
-                continue;
-            }
-            @SuppressWarnings("unchecked")
-            Map<String, Object> typedValueAsMap = (Map<String, Object>) value;
-            Object valueAsMap = typedValueAsMap==null ? null : ofMap(typedValueAsMap);
-            setField(field, instance, valueAsMap);
+//            String fieldType = fieldValue.get("type").toString();
+//            Object value = fieldValue.get("value");
+            ValueType valueType = ValueType.valueOf(fieldValue.get("valueType").toString());
+            Object originalValue = valueType.getValue(field, instance, fieldValue, this);
+            setField(field, instance, originalValue);
+            continue;
+//            if(fieldValue.get("primitive").toString().equals("true")){
+//                String valueStr = value.toString();
+//                String name = fieldType.equals("java.lang.String") ? "STRING" : fieldType.toUpperCase();
+//                PrimitiveType primitiveType = PrimitiveType.valueOf(name);
+//                Object of = primitiveType.of(valueStr);
+//                setField(field, instance, of);
+//                continue;
+//            }
+//            Class<?> fieldClass = getaClass(fieldType);
+//            if(List.class.isAssignableFrom(fieldClass)){
+//                List list = ofList((List) value);
+//                setField(field, instance, list);
+//                continue;
+//            }
+//            if(Set.class.isAssignableFrom(fieldClass)){
+//                Set set = ofSet((List)value);
+//                setField(field, instance, set);
+//                continue;
+//            }
+//            @SuppressWarnings("unchecked")
+//            Map<String, Object> typedValueAsMap = (Map<String, Object>) value;
+//            Object valueAsMap = typedValueAsMap==null ? null : ofMap(typedValueAsMap);
+//            setField(field, instance, valueAsMap);
         }
         return instance;
     }

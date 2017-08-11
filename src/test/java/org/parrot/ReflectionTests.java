@@ -81,7 +81,7 @@ public class ReflectionTests {
             System.out.println(field);
             System.out.println(value);
             //todo: support nested here
-            values.add(new TypedField(field.getType().getName(), field.getName(), true, value));
+            values.add(new TypedField(field.getType().getName(), field.getName(), ValueType.PRIMITIVE, value));
         }
         return new TypedInstance(o.getClass().getTypeName(), values);
     }

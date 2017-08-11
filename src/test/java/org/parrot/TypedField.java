@@ -8,9 +8,9 @@ import lombok.*;
 @ToString
 public class TypedField {
     @NonNull
-    private final String type;
+    private final String className;
     @NonNull
     private final String name;
-    private final boolean primitive;
+    private final ValueType valueType;
     private final Object value;
 }

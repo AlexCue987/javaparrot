@@ -21,7 +21,7 @@ public class TypedInstanceFactory {
         }
         Class<?> objectType = o.getClass();
         if(primitiveTypes.contains(objectType)){
-            return new TypedInstance(new TypedField(objectType.toString(), "NotAField", true, o));
+            return new TypedInstance(new TypedField(objectType.toString(), "NotAField", ValueType.PRIMITIVE, o));
         }
         List<TypedField> values = new ArrayList<>();
         for(Field field : getFieldsToSave(o)){
@@ -30,7 +30,7 @@ public class TypedInstanceFactory {
             Class<?> type = field.getType();
             String fieldName = field.getName();
             if(primitiveTypes.contains(type)) {
-                values.add(new TypedField(type.getName(), fieldName, true, value.toString()));
+                values.add(new TypedField(type.getName(), fieldName, ValueType.PRIMITIVE, value.toString()));
                 continue;
             }
             if(value instanceof List){
@@ -47,7 +47,7 @@ public class TypedInstanceFactory {
             }
             TypedInstance typedInstance = (value == null) ? null : of(value);
 //            System.out.println("Non-primitive:" + type);
-            values.add(new TypedField(type.getName(), fieldName, false, typedInstance));
+            values.add(new TypedField(type.getName(), fieldName, ValueType.INSTANCE, typedInstance));
         }
         return new TypedInstance(o.getClass().getTypeName(), values);
     }
@@ -71,7 +71,7 @@ public class TypedInstanceFactory {
 
     public TypedField ofList(List list, String fieldName){
         if(list == null){
-            return new TypedField(List.class.getName(), fieldName, false, null);
+            return new TypedField(List.class.getName(), fieldName, ValueType.LIST, null);
         }
         String typeName = list.getClass().getTypeName();
         List<TypedInstance> values = new ArrayList<>();
@@ -79,12 +79,12 @@ public class TypedInstanceFactory {
             TypedInstance typedInstance = of(o);
             values.add(typedInstance);
         }
-        return new TypedField(typeName, fieldName, false, values);
+        return new TypedField(typeName, fieldName, ValueType.LIST, values);
     }
 
     public TypedField ofSet(Set set, String fieldName){
         if(set == null){
-            return new TypedField(Set.class.getName(), fieldName, false, null);
+            return new TypedField(Set.class.getName(), fieldName, ValueType.SET, null);
         }
         String typeName = set.getClass().getTypeName();
         Set<TypedInstance> values = new HashSet<>();
@@ -92,12 +92,12 @@ public class TypedInstanceFactory {
             TypedInstance typedInstance = of(o);
             values.add(typedInstance);
         }
-        return new TypedField(typeName, fieldName, false, values);
+        return new TypedField(typeName, fieldName, ValueType.SET, values);
     }
 
     public TypedField ofMap(Map map, String fieldName){
         if(map == null){
-            return new TypedField(Map.class.getName(), fieldName, false, null);
+            return new TypedField(Map.class.getName(), fieldName, ValueType.MAP, null);
         }
         String typeName = map.getClass().getTypeName();
         List<TypedMapEntry> typedMapEntries = new ArrayList<>();
@@ -106,6 +106,6 @@ public class TypedInstanceFactory {
             TypedInstance typedValue = of(map.get(key));
             typedMapEntries.add(new TypedMapEntry(typedKey, typedValue));
         }
-        return new TypedField(typeName, fieldName, false, typedMapEntries);
+        return new TypedField(typeName, fieldName, ValueType.MAP, typedMapEntries);
     }
 }

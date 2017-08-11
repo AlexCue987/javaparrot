@@ -2,7 +2,6 @@ package org.parrot;
 
 import lombok.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +16,6 @@ public class TypedInstance {
     private final List<TypedField> fields;
 
     public TypedInstance(TypedField typedField){
-        this(typedField.getType(), Collections.singletonList(typedField));
+        this(typedField.getClassName(), Collections.singletonList(typedField));
     }
 }

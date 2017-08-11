@@ -28,7 +28,7 @@ public class CreateTests {
 
         System.out.println(messageJson);
 
-//        Type messageType = new TypeToken<Map<String, Object>>() {}.getType();
+//        Type messageType = new TypeToken<Map<String, Object>>() {}.getClassName();
         Map<String, String> receivedMessage = gson.fromJson(messageJson, messageType);
 //
         Class<?> clazz = Class.forName(receivedMessage.get("type").toString());
@@ -37,7 +37,7 @@ public class CreateTests {
 //        String payloadJson = gson.toJson(payload);
         Type payloadType = getType(receivedMessage.get("type").toString());
 
-//        Type nestedThingType = new TypeToken<NestedThing>() {}.getType();
+//        Type nestedThingType = new TypeToken<NestedThing>() {}.getClassName();
         Object typedPayload = gson.fromJson(payloadJson, payloadType);
         System.out.println(typedPayload);
     }
