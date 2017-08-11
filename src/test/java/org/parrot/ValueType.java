@@ -60,7 +60,8 @@ public enum ValueType {
             if(value == null){
                 return null;
             }
-            return null;
+            Map<Object, Object> ret = new HashMap<>();
+            return ret;
         }
     },
     INSTANCE{

@@ -3,10 +3,7 @@ package org.parrot;
 import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
-import org.parrot.testobjects.Thing;
-import org.parrot.testobjects.TypesTest;
-import org.parrot.testobjects.WithListOfThings;
-import org.parrot.testobjects.WithSetOfThings;
+import org.parrot.testobjects.*;
 
 import java.util.*;
 
@@ -104,5 +101,26 @@ public class IntegrationTests {
         Object actual = instanceFactory.of(json);
         System.out.println(actual);
         Assert.assertEquals(withSetOfThings, actual);
+    }
+
+    @Test
+    public void recreatesWithSetOfThings_nullMap(){
+        WithMapOfThings withMapOfThings = new WithMapOfThings("with null list", 0, null);
+        TypedInstance typedInstance = typedInstanceFactory.of(withMapOfThings);
+        String json = gson.toJson(typedInstance);
+        Object actual = instanceFactory.of(json);
+//        System.out.println(actual);
+        Assert.assertEquals(withMapOfThings, actual);
+    }
+
+    @Test
+    public void recreatesWithSetOfThings_emptyMap(){
+        Map<Object, Object> map = new HashMap<>();
+        WithMapOfThings withMapOfThings = new WithMapOfThings("with null list", 0, map);
+        TypedInstance typedInstance = typedInstanceFactory.of(withMapOfThings);
+        String json = gson.toJson(typedInstance);
+        Object actual = instanceFactory.of(json);
+        System.out.println(actual);
+        Assert.assertEquals(withMapOfThings, actual);
     }
 }
