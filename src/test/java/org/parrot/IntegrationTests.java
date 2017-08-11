@@ -9,6 +9,7 @@ import org.parrot.testobjects.TypesTest;
 import org.parrot.testobjects.WithListOfThings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class IntegrationTests {
@@ -60,6 +61,17 @@ public class IntegrationTests {
         String json = gson.toJson(typedInstance);
         Object actual = instanceFactory.of(json);
 //        System.out.println(actual);
+        Assert.assertEquals(withListOfThings, actual);
+    }
+
+    @Test
+    public void recreatesWithListOfThings_populatedList(){
+        List<Thing> things = Arrays.asList(new Thing("shoe", 12), new Thing("wrench", 10));
+        WithListOfThings withListOfThings = new WithListOfThings("with null list", 0, things);
+        TypedInstance typedInstance = typedInstanceFactory.of(withListOfThings);
+        String json = gson.toJson(typedInstance);
+        Object actual = instanceFactory.of(json);
+        System.out.println(actual);
         Assert.assertEquals(withListOfThings, actual);
     }
 }
