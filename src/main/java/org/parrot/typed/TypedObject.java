@@ -14,6 +14,8 @@ public class TypedObject {
     private final String value;
 
     public static TypedObject getPrimitive(Object value){
-        return new TypedObject(value.getClass().getTypeName(), PersistingMethod.VALUE.toString(), value.toString());
+        return new TypedObject(value.getClass().getTypeName(),
+                PersistingMethod.VALUE.toString(),
+                value.toString());
     }
 }

@@ -7,12 +7,12 @@ public enum Primitive {
 
     INT {
         @Override
-        public Object of(String value) {
+        public Object decode(String value) {
             return Integer.valueOf(value);
         }
     };
 
-    public abstract Object of(String value);
+    public abstract Object decode(String value);
 
     public static boolean isPrimitive(String className){
         return mappings.containsKey(className);
@@ -25,5 +25,10 @@ public enum Primitive {
         ret.put("int", INT);
         ret.put("java.lang.Integer", INT);
         return ret;
+    }
+
+    public static Object valueOf(String className, String value){
+        Primitive primitive = mappings.get(className);
+        return primitive.decode(value);
     }
 }

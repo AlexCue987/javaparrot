@@ -16,6 +16,6 @@ public class PrimitiveTests {
 
     @Test
     public void worksForInt(){
-        Assert.assertEquals(123, Primitive.INT.of("123"));
+        Assert.assertEquals(123, Primitive.valueOf("java.lang.Integer", "123"));
     }
 }
