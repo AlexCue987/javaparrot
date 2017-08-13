@@ -13,9 +13,11 @@ public class TypedInstance {
     @NonNull
     private final String className;
     @NonNull
+    private final ValueType valueType;
+    @NonNull
     private final List<TypedField> fields;
 
-    public TypedInstance(TypedField typedField){
-        this(typedField.getClassName(), Collections.singletonList(typedField));
+    public static TypedInstance getPrimitive(TypedField typedField){
+        return new TypedInstance(typedField.getClassName(), ValueType.PRIMITIVE, Collections.singletonList(typedField));
     }
 }

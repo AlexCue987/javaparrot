@@ -33,8 +33,7 @@ public class InstanceFactory {
 //            System.out.println(field);
 //            String fieldType = fieldValue.get("type").toString();
 //            Object value = fieldValue.get("value");
-            ValueType valueType = ValueType.valueOf(fieldValue.get("valueType").toString());
-            Object originalValue = valueType.getValue(field, instance, fieldValue, this);
+            Object originalValue = getOriginalValue(instance, field, fieldValue);
             setField(field, instance, originalValue);
             continue;
 //            if(fieldValue.get("primitive").toString().equals("true")){
@@ -62,6 +61,14 @@ public class InstanceFactory {
 //            setField(field, instance, valueAsMap);
         }
         return instance;
+    }
+
+    public Object getOriginalValue(Object instance, Field field, Map<String, Object> fieldValue) {
+        if(fieldValue == null){
+            return null;
+        }
+        ValueType valueType = ValueType.valueOf(fieldValue.get("valueType").toString());
+        return valueType.getValue(field, instance, fieldValue, this);
     }
 
     public Class<?> getaClass(String fieldType)  {
@@ -104,15 +111,15 @@ public class InstanceFactory {
         try {
             field.set(instance, object);
             return;
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     public Map<String, Object> getFieldValue(List<Map<String, Object>> fieldValues,
                                              String fieldName) {
-        Map<String, Object> ret = fieldValues.stream().
-                filter(t -> fieldName.equals(t.get("name"))).findFirst().get();
-        return ret;
+        Optional<Map<String, Object>> ret = fieldValues.stream().
+                filter(t -> fieldName.equals(t.get("name"))).findFirst();
+        return ret.orElse(null);
     }
 }

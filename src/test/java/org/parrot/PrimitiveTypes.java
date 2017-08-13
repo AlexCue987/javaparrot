@@ -19,7 +19,7 @@ public class PrimitiveTypes {
 
     private  static List<String> getPrimitiveTypeNamesFromTypes(){
         return primitiveTypes.stream().
-                map(Object::toString).
+                map(t -> t.getClass().getTypeName()).
                 collect(Collectors.toList());
     }
 
