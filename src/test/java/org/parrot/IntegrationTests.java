@@ -2,6 +2,7 @@ package org.parrot;
 
 import com.google.gson.Gson;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.parrot.testobjects.*;
 
@@ -124,6 +125,7 @@ public class IntegrationTests {
         Assert.assertEquals(withMapOfThings, actual);
     }
 
+    @Ignore
     @Test
     public void recreatesWithSetOfThings_populatedMap(){
         Map<Object, Object> map = new HashMap<>();

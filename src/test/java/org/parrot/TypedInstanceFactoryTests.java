@@ -3,6 +3,7 @@ package org.parrot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.parrot.testobjects.TypesNestedTest;
 import org.parrot.testobjects.TypesTest;
@@ -10,6 +11,7 @@ import org.parrot.testobjects.TypesTest;
 import java.lang.reflect.Field;
 import java.util.*;
 
+@Ignore
 public class TypedInstanceFactoryTests {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
