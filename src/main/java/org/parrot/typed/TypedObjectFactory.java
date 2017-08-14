@@ -15,7 +15,8 @@ public class TypedObjectFactory {
             return TypedObject.getPrimitive(o);
         }
         if(o instanceof List){
-
+            TypedListFactory typedListFactory = new TypedListFactory(this);
+            return typedListFactory.get((List) o);
         }
         throw new RuntimeException("Unsupported: " + o);
     }

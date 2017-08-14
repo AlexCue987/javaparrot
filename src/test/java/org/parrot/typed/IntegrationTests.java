@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class IntegrationTests {
@@ -29,6 +31,15 @@ public class IntegrationTests {
         Map<String, Object> map = toJsonAndBack(typedInt);
         Object actual = objectFactory.of(map);
         Assert.assertEquals(aLong, actual);
+    }
+
+    @Test
+    public void recreatesList(){
+        List<Object> items = Arrays.asList(new Integer(12), new Long(34L));
+        TypedObject typedList = typedObjectFactory.of(items);
+        Map<String, Object> map = toJsonAndBack(typedList);
+        Object actual = objectFactory.of(map);
+        Assert.assertEquals(items, actual);
     }
 
     public Map<String, Object> toJsonAndBack(TypedObject typedInt) {
