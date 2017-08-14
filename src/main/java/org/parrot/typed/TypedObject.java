@@ -11,7 +11,7 @@ public class TypedObject {
     private final String className;
     @NonNull
     private final String persistingMethod;
-    private final String value;
+    private final Object value;
 
     public static TypedObject getPrimitive(Object value){
         return new TypedObject(value.getClass().getTypeName(),
