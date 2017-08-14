@@ -13,4 +13,8 @@ public class ObjectFromTypedValueFactory {
         ObjectFromStringFactory factory = factoryMap.get(typedValue.getClassName());
         return factory.of(typedValue.getValue());
     }
+
+    public boolean isValueType(String className){
+        return factoryMap.containsKey(className);
+    }
 }

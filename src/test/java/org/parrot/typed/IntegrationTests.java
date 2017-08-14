@@ -17,10 +17,23 @@ public class IntegrationTests {
     public void recreatesInteger(){
         int anInt = 123;
         TypedObject typedInt = typedObjectFactory.of(anInt);
-        String json = gson.toJson(typedInt);
-        Type type = new TypeToken<Map<String, Object>>() {}.getType();
-        Map<String, Object> map = gson.fromJson(json, type);
+        Map<String, Object> map = toJsonAndBack(typedInt);
         Object actual = objectFactory.of(map);
         Assert.assertEquals(anInt, actual);
+    }
+
+    @Test
+    public void recreatesLong(){
+        long aLong = 234L;
+        TypedObject typedInt = typedObjectFactory.of(aLong);
+        Map<String, Object> map = toJsonAndBack(typedInt);
+        Object actual = objectFactory.of(map);
+        Assert.assertEquals(aLong, actual);
+    }
+
+    public Map<String, Object> toJsonAndBack(TypedObject typedInt) {
+        String json = gson.toJson(typedInt);
+        Type type = new TypeToken<Map<String, Object>>() {}.getType();
+        return gson.fromJson(json, type);
     }
 }
