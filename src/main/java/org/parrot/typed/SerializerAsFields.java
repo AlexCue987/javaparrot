@@ -20,7 +20,7 @@ public class SerializerAsFields implements Serializer {
 
     @Override
     public TypedObject serialize(Object object) {
-        List<Field> fields = getFieldsToSerialize(object);
+        List<Field> fields = FieldsToSerializeReader.getFieldsToSerialize(object);
         List<TypedObject> typedObjects = new ArrayList<>(fields.size());
         for(Field field : fields){
             field.setAccessible(true);
@@ -39,14 +39,5 @@ public class SerializerAsFields implements Serializer {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static List<Field> getFieldsToSerialize(Object o){
-        Field[] fields = o.getClass().getDeclaredFields();
-        return Arrays.stream(fields).
-                filter(field -> !field.isEnumConstant() &&
-                        !field.isSynthetic() &&
-                        !java.lang.reflect.Modifier.isStatic(field.getModifiers())).
-                collect(Collectors.toList());
     }
 }

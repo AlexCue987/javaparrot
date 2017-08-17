@@ -12,6 +12,7 @@ public class ObjectFactory {
         deserializerMap.put(PersistingMethod.VALUE, new DeserializerAsValue());
         deserializerMap.put(PersistingMethod.LIST, new DeserializerAsList(this));
         deserializerMap.put(PersistingMethod.MAP, new DeserializerAsMap(this));
+        deserializerMap.put(PersistingMethod.FIELDS, new DeserializerAsFields(this));
     }
 
     public Object of(Map<String, Object> typedObjectFromJson){
