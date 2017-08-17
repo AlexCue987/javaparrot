@@ -11,6 +11,7 @@ public class TypedObjectFactory {
         serializers = new ArrayList<>(2);
         serializers.add(new SerializerAsValue());
         serializers.add(new SerializerAsList(this));
+        serializers.add(new SerializerAsMap(this));
     }
 
     public TypedObject of(Object o){

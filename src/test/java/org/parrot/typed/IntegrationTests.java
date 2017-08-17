@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,17 @@ public class IntegrationTests {
         Map<String, Object> map = toJsonAndBack(typedList);
         Object actual = objectFactory.of(map);
         Assert.assertEquals(items, actual);
+    }
+
+    @Test
+    public void recreatesMap(){
+        Map<Object, Object> map = new HashMap<>();
+        map.put(123, 456L);
+        map.put(12L, 34);
+        TypedObject typedList = typedObjectFactory.of(map);
+        Map<String, Object> typedMap = toJsonAndBack(typedList);
+        Object actual = objectFactory.of(typedMap);
+        Assert.assertEquals(map, actual);
     }
 
     public Map<String, Object> toJsonAndBack(TypedObject typedInt) {
