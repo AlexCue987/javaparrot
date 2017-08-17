@@ -1,22 +1,23 @@
 package org.parrot.typed;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TypedObjectFactory {
-    private final ObjectFromTypedValueFactory objectFromTypedValueFactory;
+
+    private final List<Serializer> serializers;
 
     public TypedObjectFactory() {
-        objectFromTypedValueFactory = new ObjectFromTypedValueFactoryBuilder().create();
+        serializers = new ArrayList<>(2);
+        serializers.add(new SerializerAsValue());
+        serializers.add(new SerializerAsList(this));
     }
 
     public TypedObject of(Object o){
-        String className = o.getClass().getTypeName();
-        if(objectFromTypedValueFactory.isValueType(className)){
-            return TypedObject.getPrimitive(o);
-        }
-        if(o instanceof List){
-            TypedListFactory typedListFactory = new TypedListFactory(this);
-            return typedListFactory.get((List) o);
+        for(Serializer serializer: serializers){
+            if(serializer.canSerialize(o)){
+                return serializer.serialize(o);
+            }
         }
         throw new RuntimeException("Unsupported: " + o);
     }

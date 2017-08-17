@@ -1,32 +1,31 @@
 package org.parrot.typed;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ObjectFactory {
     private final ObjectFromTypedValueFactory factory = getFactory();
 
+    private final Map<PersistingMethod, Deserializer> deserializerMap;
+
+    public ObjectFactory() {
+        deserializerMap = new HashMap<>();
+        deserializerMap.put(PersistingMethod.VALUE, new DeserializerAsValue());
+        deserializerMap.put(PersistingMethod.LIST, new DeserializerAsList(this));
+    }
+
     public Object of(Map<String, Object> typedObjectFromJson){
         String persistingMethodStr = typedObjectFromJson.get("persistingMethod").toString();
         String className = typedObjectFromJson.get("className").toString();
         PersistingMethod persistingMethod = PersistingMethod.valueOf(persistingMethodStr);
-        if(persistingMethod.equals(PersistingMethod.VALUE)){
-            String value = typedObjectFromJson.get("value").toString();
-            return factory.of(new TypedValue(className, value));
+        if(!deserializerMap.containsKey(persistingMethod)){
+            throw new RuntimeException("not found: " + persistingMethod);
         }
-        if(persistingMethod.equals(PersistingMethod.LIST)){
-            List list = (List)typedObjectFromJson.get("value");
-            List<Object> untyped = new ArrayList<>(list.size());
-            for(Object object : list){
-                @SuppressWarnings("unchecked")
-                Map<String, Object> map = (Map<String, Object>) object;
-                Object originalObject = of(map);
-                untyped.add(originalObject);
-            }
-            return untyped;
-        }
-        return null;
+        Deserializer deserializer = deserializerMap.get(persistingMethod);
+        Object value = typedObjectFromJson.get("value");
+        return deserializer.deserialize(className, value);
     }
 
     private static ObjectFromTypedValueFactory getFactory(){
