@@ -1,12 +1,9 @@
 package org.parrot.typed;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ObjectFactory {
-    private final ObjectFromTypedValueFactory factory = getFactory();
 
     private final Map<PersistingMethod, Deserializer> deserializerMap;
 
@@ -26,9 +23,5 @@ public class ObjectFactory {
         Deserializer deserializer = deserializerMap.get(persistingMethod);
         Object value = typedObjectFromJson.get("value");
         return deserializer.deserialize(className, value);
-    }
-
-    private static ObjectFromTypedValueFactory getFactory(){
-        return new ObjectFromTypedValueFactoryBuilder().create();
     }
 }
