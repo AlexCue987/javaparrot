@@ -15,18 +15,19 @@ public class SerializerAsFields implements Serializer {
 
     @Override
     public boolean canSerialize(Object object) {
-        return (object instanceof List);
+        return true;
     }
 
     @Override
     public TypedObject serialize(Object object) {
         List<Field> fields = FieldsToSerializeReader.getFieldsToSerialize(object);
-        List<TypedObject> typedObjects = new ArrayList<>(fields.size());
+        List<TypedField> typedObjects = new ArrayList<>(fields.size());
         for(Field field : fields){
             field.setAccessible(true);
             Object value = getObject(object, field);
             TypedObject typedObject = typedObjectFactory.of(value);
-            typedObjects.add(typedObject);
+            TypedField typedField = new TypedField(field.getName(), typedObject);
+            typedObjects.add(typedField);
         }
         return new TypedObject(object.getClass().getTypeName(),
                 PersistingMethod.FIELDS.toString(),

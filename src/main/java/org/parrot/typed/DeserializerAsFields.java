@@ -6,6 +6,7 @@ import org.objenesis.instantiator.ObjectInstantiator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,20 +19,39 @@ public class DeserializerAsFields implements Deserializer {
 
     @Override
     public Object deserialize(String className, Object value) {
+        @SuppressWarnings("unchecked")
+        List<Object> typedFields = (List<Object>)value;
+        Map<String, Map<String, Object>> typedFieldsMap = getTypedFieldsMap(typedFields);
         Object ret = of(className);
-        List<Field> fieldsToPopulate = FieldsToSerializeReader.getFieldsToSerialize(value);
+        List<Field> fieldsToPopulate = FieldsToSerializeReader.getFieldsToSerialize(ret);
         for(int i=0; i<fieldsToPopulate.size(); i++) {
             Field field = fieldsToPopulate.get(i);
             field.setAccessible(true);
             String fieldname = field.getName();
+            Map<String, Object> typedFieldMap = typedFieldsMap.get(fieldname);
+            Object untypedObject = objectFactory.of(typedFieldMap);
+            setField(ret, field, untypedObject);
         }
-        List list = (List)value;
-        List<Object> untyped = new ArrayList<>(list.size());
-        for(Object object : list){
+        return ret;
+    }
+
+    public void setField(Object ret, Field field, Object untypedObject) {
+        try {
+            field.set(ret, untypedObject);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    Map<String, Map<String, Object>> getTypedFieldsMap(List<Object> typedFields){
+        Map<String, Map<String, Object>> ret = new HashMap<>();
+        for(Object typedField : typedFields){
+            Map<String, Object> typedFieldMap = (Map<String, Object>)typedField;
+            String fieldName = typedFieldMap.get("fieldName").toString();
+            Object typedValue = typedFieldMap.get("typedValue");
             @SuppressWarnings("unchecked")
-            Map<String, Object> map = (Map<String, Object>) object;
-            Object originalObject = objectFactory.of(map);
-            untyped.add(originalObject);
+            Map<String, Object> typedValueMap = (Map<String, Object>) typedValue;
+            ret.put(fieldName, typedValueMap);
         }
         return ret;
     }

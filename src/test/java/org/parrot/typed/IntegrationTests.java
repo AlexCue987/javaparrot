@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
+import org.parrot.testobjects.Thing;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -52,6 +53,15 @@ public class IntegrationTests {
         Map<String, Object> typedMap = toJsonAndBack(typedList);
         Object actual = objectFactory.of(typedMap);
         Assert.assertEquals(map, actual);
+    }
+
+    @Test
+    public void recreatesAsFields(){
+        Thing thing = new Thing("box", 4);
+        TypedObject typedThing = typedObjectFactory.of(thing);
+        Map<String, Object> map = toJsonAndBack(typedThing);
+        Object actual = objectFactory.of(map);
+        Assert.assertEquals(thing, actual);
     }
 
     public Map<String, Object> toJsonAndBack(TypedObject typedInt) {
