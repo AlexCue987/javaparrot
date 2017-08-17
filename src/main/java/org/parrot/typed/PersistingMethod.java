@@ -2,7 +2,8 @@ package org.parrot.typed;
 
 public enum PersistingMethod {
     VALUE,
-    LIST;
+    LIST,
+    MAP;
 
 //    private final ObjectFromTypedValueFactory objectFromTypedValueFactory = new ObjectFromTypedValueFactory();
 //

@@ -14,14 +14,18 @@ public class ObjectFactory {
     }
 
     public Object of(Map<String, Object> typedObjectFromJson){
-        String persistingMethodStr = typedObjectFromJson.get("persistingMethod").toString();
         String className = typedObjectFromJson.get("className").toString();
-        PersistingMethod persistingMethod = PersistingMethod.valueOf(persistingMethodStr);
+        PersistingMethod persistingMethod = getPersistingMethod(typedObjectFromJson);
         if(!deserializerMap.containsKey(persistingMethod)){
             throw new RuntimeException("not found: " + persistingMethod);
         }
         Deserializer deserializer = deserializerMap.get(persistingMethod);
         Object value = typedObjectFromJson.get("value");
         return deserializer.deserialize(className, value);
+    }
+
+    public PersistingMethod getPersistingMethod(Map<String, Object> typedObjectFromJson) {
+        String persistingMethodStr = typedObjectFromJson.get("persistingMethod").toString();
+        return PersistingMethod.valueOf(persistingMethodStr);
     }
 }
