@@ -6,12 +6,12 @@ import lombok.*;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class TypesNestedTest {
+public class WithNestedObject {
     private final boolean active;
     private final int anInt;
     private final long aLong;
     private final double aDouble;
     @NonNull
     private final String aString;
-    private final TypesNestedTest nestedTest;
+    private final WithNestedObject nestedObject;
 }

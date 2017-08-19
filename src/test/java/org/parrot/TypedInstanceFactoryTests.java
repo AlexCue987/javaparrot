@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.parrot.testobjects.TypesNestedTest;
+import org.parrot.testobjects.WithNestedObject;
 import org.parrot.testobjects.TypesTest;
 
 import java.lang.reflect.Field;
@@ -60,8 +60,8 @@ public class TypedInstanceFactoryTests {
 
     @Test
     public void nested() throws IllegalAccessException {
-        TypesNestedTest t1 = new TypesNestedTest(false, 1, 2L, 3.4, "five", null);
-        TypesNestedTest t2 = new TypesNestedTest(true, 2, 3L, 4.5, "six", t1);
+        WithNestedObject t1 = new WithNestedObject(false, 1, 2L, 3.4, "five", null);
+        WithNestedObject t2 = new WithNestedObject(true, 2, 3L, 4.5, "six", t1);
         TypedInstance instance = new TypedInstanceFactory().of(t2);
         String s = instance.toString().replace(",", "\n,");
         System.out.println(s);

@@ -4,20 +4,26 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
-import org.parrot.testobjects.Thing;
-import org.parrot.testobjects.TypesTest;
-import org.parrot.testobjects.WithAllPrimitiveTypes;
+import org.parrot.testobjects.*;
 
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class IntegrationTests {
     TypedObjectFactory typedObjectFactory = new TypedObjectFactory();
     Gson gson = new Gson();
     ObjectFactory objectFactory = new ObjectFactory();
+
+    WithNestedObject nestedObject = null;
+    WithNestedObject innerObject = new WithNestedObject(true, 1 ,2L, 3.4, "five", nestedObject);
+    WithNestedObject outerObject = new WithNestedObject(false, 2 ,2L, 4.5, "six", innerObject);
+    WithAllPrimitiveTypes withAllPrimitiveTypes = new WithAllPrimitiveTypes(true,
+            'A',
+            (short)2,
+            3,
+            4L,
+            (float)5.6,
+            7.8);
 
     @Test
     public void recreatesInteger(){
@@ -66,14 +72,41 @@ public class IntegrationTests {
 
     @Test
     public void recreatesWithAllPrimitiveTypes(){
-        WithAllPrimitiveTypes object = new WithAllPrimitiveTypes(true,
-                'A',
-                (short)2,
-                3,
-                4L,
-                (float)5.6,
-                7.8);
-        assertRecreates(object);
+        assertRecreates(withAllPrimitiveTypes);
+    }
+
+    @Test
+    public void recreatesWithNestedObject(){
+        assertRecreates(outerObject);
+    }
+
+    @Test
+    public void recreates_WithListOfThings_nullList(){
+        List<Thing> things = null;
+        WithListOfThings withListOfThings = new WithListOfThings("with null list", 0, things);
+        assertRecreates(withListOfThings);
+    }
+
+    @Test
+    public void recreates_WithListOfThings_emptyList(){
+        List<Thing> things = new ArrayList<>();
+        WithListOfThings withListOfThings = new WithListOfThings("with null list", 0, things);
+        assertRecreates(withListOfThings);
+    }
+
+    @Test
+    public void recreatesWithListOfThings_populatedList() {
+        List<Thing> things = Arrays.asList(new Thing("shoe", 12), new Thing("wrench", 10));
+        WithListOfThings withListOfThings = new WithListOfThings("with populated list", 0, things);
+        assertRecreates(withListOfThings);
+    }
+
+    @Test
+    public void recreatesWithListOfObjects_populatedListOfDifferentTypes() {
+        List<Object> things = Arrays.asList(new Thing("shoe", 12), 23L, 4.56, "aString",
+                outerObject, withAllPrimitiveTypes);
+        WithListOfObjects withListOfObjects = new WithListOfObjects("with list of different things", 0, things);
+        assertRecreates(withListOfObjects);
     }
 
     public Map<String, Object> toJsonAndBack(TypedObject typedInt) {

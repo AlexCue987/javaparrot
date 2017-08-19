@@ -1,6 +1,5 @@
 package org.parrot.typed;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class SerializerAsValue implements Serializer {
@@ -16,12 +15,18 @@ public class SerializerAsValue implements Serializer {
 
     @Override
     public boolean canSerialize(Object object) {
+        if(object == null){
+            return true;
+        }
         String className = ObjectFromStringFactoryMap.getClassName(object);
         return factoryMap.containsKey(className);
     }
 
     @Override
     public TypedObject serialize(Object object) {
+        if(object == null){
+            return null;
+        }
         return new TypedObject(object.getClass().getTypeName(),
                 PersistingMethod.VALUE.toString(),
                 object.toString());

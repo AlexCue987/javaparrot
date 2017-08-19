@@ -9,6 +9,5 @@ import lombok.*;
 public class TypedField {
     @NonNull
     private final String fieldName;
-    @NonNull
     private final TypedObject typedValue;
 }

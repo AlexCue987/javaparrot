@@ -16,6 +16,9 @@ public class ObjectFactory {
     }
 
     public Object of(Map<String, Object> typedObjectFromJson){
+        if(typedObjectFromJson == null){
+            return null;
+        }
         String className = typedObjectFromJson.get("className").toString();
         PersistingMethod persistingMethod = getPersistingMethod(typedObjectFromJson);
         if(!deserializerMap.containsKey(persistingMethod)){
