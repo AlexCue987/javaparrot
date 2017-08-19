@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Test;
 import org.parrot.testobjects.Thing;
+import org.parrot.testobjects.TypesTest;
+import org.parrot.testobjects.WithAllPrimitiveTypes;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -20,28 +22,19 @@ public class IntegrationTests {
     @Test
     public void recreatesInteger(){
         int anInt = 123;
-        TypedObject typedInt = typedObjectFactory.of(anInt);
-        Map<String, Object> map = toJsonAndBack(typedInt);
-        Object actual = objectFactory.of(map);
-        Assert.assertEquals(anInt, actual);
+        assertRecreates(anInt);
     }
 
     @Test
     public void recreatesLong(){
         long aLong = 234L;
-        TypedObject typedInt = typedObjectFactory.of(aLong);
-        Map<String, Object> map = toJsonAndBack(typedInt);
-        Object actual = objectFactory.of(map);
-        Assert.assertEquals(aLong, actual);
+        assertRecreates(aLong);
     }
 
     @Test
     public void recreatesList(){
         List<Object> items = Arrays.asList(new Integer(12), new Long(34L));
-        TypedObject typedList = typedObjectFactory.of(items);
-        Map<String, Object> map = toJsonAndBack(typedList);
-        Object actual = objectFactory.of(map);
-        Assert.assertEquals(items, actual);
+        assertRecreates(items);
     }
 
     @Test
@@ -49,19 +42,38 @@ public class IntegrationTests {
         Map<Object, Object> map = new HashMap<>();
         map.put(123, 456L);
         map.put(12L, 34);
-        TypedObject typedList = typedObjectFactory.of(map);
-        Map<String, Object> typedMap = toJsonAndBack(typedList);
-        Object actual = objectFactory.of(typedMap);
-        Assert.assertEquals(map, actual);
+        assertRecreates(map);
     }
 
     @Test
     public void recreatesAsFields(){
         Thing thing = new Thing("box", 4);
-        TypedObject typedThing = typedObjectFactory.of(thing);
+        assertRecreates(thing);
+    }
+
+    @Test
+    public void recreatesTypesTest(){
+        Object typesTest = new TypesTest(true, 1, 2L, 3.4, "five");
+        assertRecreates(typesTest);
+    }
+
+    public void assertRecreates(Object typesTest) {
+        TypedObject typedThing = typedObjectFactory.of(typesTest);
         Map<String, Object> map = toJsonAndBack(typedThing);
         Object actual = objectFactory.of(map);
-        Assert.assertEquals(thing, actual);
+        Assert.assertEquals(typesTest, actual);
+    }
+
+    @Test
+    public void recreatesWithAllPrimitiveTypes(){
+        WithAllPrimitiveTypes object = new WithAllPrimitiveTypes(true,
+                'A',
+                (short)2,
+                3,
+                4L,
+                (float)5.6,
+                7.8);
+        assertRecreates(object);
     }
 
     public Map<String, Object> toJsonAndBack(TypedObject typedInt) {
