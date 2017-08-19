@@ -8,7 +8,7 @@ public class EmptyInstanceFactory {
     public Object of(String typeName){
         try {
             Objenesis objenesis = new ObjenesisStd();
-            ClassLoader classLoader = ReflectionTests.class.getClassLoader();
+            ClassLoader classLoader = EmptyInstanceFactory.class.getClassLoader();
             Class clazz = classLoader.loadClass(typeName);
             ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(clazz);
             return thingyInstantiator.newInstance();
