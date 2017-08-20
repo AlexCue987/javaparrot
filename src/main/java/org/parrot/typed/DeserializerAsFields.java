@@ -1,5 +1,6 @@
 package org.parrot.typed;
 
+import com.google.gson.Gson;
 import org.objenesis.Objenesis;
 import org.objenesis.ObjenesisStd;
 import org.objenesis.instantiator.ObjectInstantiator;

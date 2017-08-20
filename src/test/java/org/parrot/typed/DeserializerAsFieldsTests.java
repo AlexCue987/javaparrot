@@ -1,11 +1,14 @@
 package org.parrot.typed;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.parrot.testobjects.Thing;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class DeserializerAsFieldsTests {
@@ -42,5 +45,17 @@ public class DeserializerAsFieldsTests {
         String kayak = "kayak";
         deserializer.setField(thing, fieldsToPopulate.get(0), kayak);
         Assert.assertTrue(thing.getName().equals(kayak));
+    }
+
+    @Test
+    public void deserialize_works(){
+        String json = "[{\"fieldName\":\"name\",\"typedValue\":{\"className\":\"java.lang.String\",\"persistingMethod\":\"VALUE\",\"value\":\"shoe\"}}," +
+                "{\"fieldName\":\"size\",\"typedValue\":{\"className\":\"java.lang.Integer\",\"persistingMethod\":\"VALUE\",\"value\":\"12\"}}]";
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Object>>() {}.getType();
+        Object mapFromJson = gson.fromJson(json, type);
+        Object actual = deserializer.deserialize(Thing.class.getTypeName(), mapFromJson);
+        Thing expected = new Thing("shoe", 12);
+        Assert.assertEquals(expected, actual);
     }
 }
