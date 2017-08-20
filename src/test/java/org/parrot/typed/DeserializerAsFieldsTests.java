@@ -1,8 +1,11 @@
 package org.parrot.typed;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.parrot.testobjects.Thing;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class DeserializerAsFieldsTests {
@@ -28,5 +31,16 @@ public class DeserializerAsFieldsTests {
         Map<String, Map<String, Object>> actual = deserializer.getTypedFieldsMap(oneFieldAsList);
         System.out.println(actual);
         Assert.assertEquals("{answer={type=java.lang.Long, value=42}}", actual.toString());
+    }
+
+    @Test
+    public void setField(){
+        String className = Thing.class.getTypeName();
+        Thing thing = (Thing)deserializer.of(className);
+        Assert.assertTrue(thing.getName() == null);
+        List<Field> fieldsToPopulate = FieldsToSerializeReader.getFieldsToSerialize(thing);
+        String kayak = "kayak";
+        deserializer.setField(thing, fieldsToPopulate.get(0), kayak);
+        Assert.assertTrue(thing.getName().equals(kayak));
     }
 }

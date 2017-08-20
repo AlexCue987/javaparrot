@@ -26,7 +26,6 @@ public class DeserializerAsFields implements Deserializer {
         List<Field> fieldsToPopulate = FieldsToSerializeReader.getFieldsToSerialize(ret);
         for(int i=0; i<fieldsToPopulate.size(); i++) {
             Field field = fieldsToPopulate.get(i);
-            field.setAccessible(true);
             String fieldname = field.getName();
             Map<String, Object> typedFieldMap = typedFieldsMap.get(fieldname);
             Object untypedObject = objectFactory.of(typedFieldMap);
@@ -37,6 +36,7 @@ public class DeserializerAsFields implements Deserializer {
 
     public void setField(Object ret, Field field, Object untypedObject) {
         try {
+            field.setAccessible(true);
             field.set(ret, untypedObject);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
