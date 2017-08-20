@@ -16,13 +16,6 @@ public class DeserializerAsFieldsTests {
     final DeserializerAsFields deserializer = new DeserializerAsFields(objectFactory);
 
     @Test
-    public void of_works(){
-        String className = this.getClass().getTypeName();
-        Object actual = deserializer.of(className);
-        Assert.assertTrue(actual instanceof DeserializerAsFieldsTests);
-    }
-
-    @Test
     public void getTypedFieldsMap(){
         Map<String, Object> typedValueMap = new HashMap<>(2);
         typedValueMap.put("type", "java.lang.Long");
@@ -39,7 +32,7 @@ public class DeserializerAsFieldsTests {
     @Test
     public void setField(){
         String className = Thing.class.getTypeName();
-        Thing thing = (Thing)deserializer.of(className);
+        Thing thing = (Thing)EmptyInstanceFactory.create(className);
         Assert.assertTrue(thing.getName() == null);
         List<Field> fieldsToPopulate = FieldsToSerializeReader.getFieldsToSerialize(thing);
         String kayak = "kayak";

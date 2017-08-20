@@ -23,7 +23,7 @@ public class DeserializerAsFields implements Deserializer {
         @SuppressWarnings("unchecked")
         List<Object> typedFields = (List<Object>)value;
         Map<String, Map<String, Object>> typedFieldsMap = getTypedFieldsMap(typedFields);
-        Object ret = of(className);
+        Object ret = EmptyInstanceFactory.create(className);
         List<Field> fieldsToPopulate = FieldsToSerializeReader.getFieldsToSerialize(ret);
         for(int i=0; i<fieldsToPopulate.size(); i++) {
             Field field = fieldsToPopulate.get(i);
@@ -55,17 +55,5 @@ public class DeserializerAsFields implements Deserializer {
             ret.put(fieldName, typedValueMap);
         }
         return ret;
-    }
-
-    public Object of(String typeName){
-        try {
-            Objenesis objenesis = new ObjenesisStd();
-            ClassLoader classLoader = DeserializerAsFields.class.getClassLoader();
-            Class clazz = classLoader.loadClass(typeName);
-            ObjectInstantiator thingyInstantiator = objenesis.getInstantiatorOf(clazz);
-            return thingyInstantiator.newInstance();
-        }catch(ClassNotFoundException e){
-            throw new RuntimeException(e);
-        }
     }
 }
