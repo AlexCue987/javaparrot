@@ -102,6 +102,13 @@ public class IntegrationTests {
     }
 
     @Test
+    public void recreatesWithArrayListOfThings_populatedList() {
+        ArrayList<Thing> things = new ArrayList<>(Arrays.asList(new Thing("shoe", 12), new Thing("wrench", 10)));
+        WithArrayListOfThings withArrayListOfThings = new WithArrayListOfThings("with populated list", 0, things);
+        assertRecreates(withArrayListOfThings);
+    }
+
+    @Test
     public void recreatesWithListOfObjects_populatedListOfDifferentTypes() {
         List<Object> things = Arrays.asList(new Thing("shoe", 12), 23L, 4.56, "aString",
                 outerObject, withAllPrimitiveTypes);
