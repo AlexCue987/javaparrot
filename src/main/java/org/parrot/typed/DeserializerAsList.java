@@ -1,5 +1,7 @@
 package org.parrot.typed;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,8 @@ public class DeserializerAsList implements Deserializer {
     }
 
     @Override
-    public Object deserialize(String className, Object value) {
+    public Object deserialize(String classNameIgnored, Object value) {
+        printValue(value);
         List list = (List)value;
         List<Object> untyped = new ArrayList<>(list.size());
         for(Object object : list){
@@ -22,5 +25,11 @@ public class DeserializerAsList implements Deserializer {
             untyped.add(originalObject);
         }
         return untyped;
+    }
+
+    void printValue(Object value){
+        Gson gson = new Gson();
+        String json = gson.toJson(value);
+        System.out.println(json);
     }
 }
