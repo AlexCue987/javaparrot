@@ -116,6 +116,38 @@ public class IntegrationTests {
         assertRecreates(withListOfObjects);
     }
 
+    @Test
+    public void recreates_WithMapOfThings_nullMap(){
+        Map<Object, Object> things = null;
+        WithMapOfThings withMapOfThings = new WithMapOfThings("with null Map", 0, things);
+        assertRecreates(withMapOfThings);
+    }
+
+    @Test
+    public void recreates_WithMapOfThings_emptyMap(){
+        Map<Object, Object> things = new HashMap<>();
+        WithMapOfThings withMapOfThings = new WithMapOfThings("with null Map", 0, things);
+        assertRecreates(withMapOfThings);
+    }
+
+    @Test
+    public void recreatesWithMapOfThings_populatedMap() {
+        Map<Object, Object> things = new HashMap<>();
+        things.put("asdf", new Thing("shoe", 12));
+        things.put(new Thing("wrench", 10), 234L);
+        WithMapOfThings withMapOfThings = new WithMapOfThings("with populated Map", 0, things);
+        assertRecreates(withMapOfThings);
+    }
+
+    @Test
+    public void recreatesWithHashMapOfThings_populatedMap() {
+        HashMap<Object, Object> things = new HashMap<>();
+        things.put("asdf", new Thing("shoe", 12));
+        things.put(new Thing("wrench", 10), 234L);
+        WithHashMapOfThings withMapOfThings = new WithHashMapOfThings("with populated Map", 0, things);
+        assertRecreates(withMapOfThings);
+    }
+
     public Map<String, Object> toJsonAndBack(TypedObject typedInt) {
         String json = gson.toJson(typedInt);
         Type type = new TypeToken<Map<String, Object>>() {}.getType();
