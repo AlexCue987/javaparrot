@@ -16,7 +16,7 @@ public class ObjectFactory {
     }
 
     public Object of(Map<String, Object> typedObjectFromJson){
-        if(typedObjectFromJson == null){
+        if(typedObjectFromJson == null || !typedObjectFromJson.containsKey("value")){
             return null;
         }
         String className = typedObjectFromJson.get("className").toString();
