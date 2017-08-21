@@ -3,7 +3,6 @@ package org.parrot.typed;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.parrot.testobjects.Thing;
 
