@@ -12,6 +12,7 @@ public class TypedObjectFactory {
         serializers.add(new SerializerAsValue());
         serializers.add(new SerializerAsList(this));
         serializers.add(new SerializerAsMap(this));
+        serializers.add(new SerializerAsSet(this));
         serializers.add(new SerializerAsFields(this));
     }
 

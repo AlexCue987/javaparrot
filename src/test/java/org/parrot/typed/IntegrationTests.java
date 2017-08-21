@@ -44,6 +44,13 @@ public class IntegrationTests {
     }
 
     @Test
+    public void recreatesSet(){
+        List<Object> items = Arrays.asList("wrench", "saw");
+        Set<Object> set = new HashSet<>(items);
+        assertRecreates(set);
+    }
+
+    @Test
     public void recreatesMap(){
         Map<Object, Object> map = new HashMap<>();
         map.put(123, 456L);
