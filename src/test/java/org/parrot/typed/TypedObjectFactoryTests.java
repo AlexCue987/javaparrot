@@ -13,23 +13,6 @@ public class TypedObjectFactoryTests {
     TypedObjectFactory factory = new TypedObjectFactory();
 
     @Test
-    public void worksForInt(){
-        final int anInt = 234;
-        TypedObject typedObject = factory.of(anInt);
-        Assert.assertEquals("TypedObject(className=java.lang.Integer, persistingMethod=VALUE, value=234)", typedObject.toString());
-    }
-
-    @Test
-    public void worksForList(){
-        List<Object> list = new ArrayList<>(2);
-        list.add(123);
-        list.add(234L);
-        TypedObject typedObject = factory.of(list);
-        String expected = "TypedObject(className=java.util.ArrayList, persistingMethod=LIST, value=[TypedObject(className=java.lang.Integer, persistingMethod=VALUE, value=123), TypedObject(className=java.lang.Long, persistingMethod=VALUE, value=234)])";
-        Assert.assertEquals(expected, typedObject.toString());
-    }
-
-    @Test
     public void worksWithValue(){
         Object object = 234L;
         TypedObject actual = factory.of(object);

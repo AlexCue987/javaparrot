@@ -14,7 +14,10 @@ public class SerializerAsListTests {
     public void serialize_works(){
         List<Object> list = getList();
         TypedObject actual = serializer.serialize(list);
-        Assert.assertEquals("afd", actual.toString());
+        Assert.assertEquals("TypedObject(className=java.util.ArrayList, persistingMethod=LIST, " +
+                        "value=[TypedObject(className=java.lang.Integer, persistingMethod=VALUE, value=123), " +
+                        "TypedObject(className=java.lang.Long, persistingMethod=VALUE, value=234)])",
+                actual.toString());
     }
 
     public List<Object> getList() {
