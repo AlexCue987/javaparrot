@@ -26,5 +26,4 @@ public class SerializerAsListTests {
         list.add(234L);
         return list;
     }
-
 }

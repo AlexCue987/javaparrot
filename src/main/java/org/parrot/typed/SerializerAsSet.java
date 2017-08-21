@@ -1,27 +1,31 @@
 package org.parrot.typed;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class SerializerAsList extends SerializerAsCollection {
+public class SerializerAsSet extends SerializerAsCollection {
 
-    public SerializerAsList(TypedObjectFactory typedObjectFactory) {
+    public SerializerAsSet(TypedObjectFactory typedObjectFactory) {
 
         super(typedObjectFactory);
     }
 
     @Override
     public boolean canSerialize(Object object) {
-        return (object instanceof List);
+        return (object instanceof Set);
     }
 
     @Override
     public List getList(Object object) {
-        return (List)object;
+        Set set = (Set) object;
+        List list = new ArrayList(set);
+        return list;
     }
 
     @Override
     public String getPersistingMethod() {
-        return PersistingMethod.LIST.toString();
+        return PersistingMethod.SET.toString();
     }
 
     @Override
