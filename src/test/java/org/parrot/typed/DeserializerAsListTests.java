@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DeserializerAsListTests {
-    final ObjectFactory objectFactory = new ObjectFactory();
-    final DeserializerAsList deserializer = new DeserializerAsList(objectFactory);
+    private final ObjectFactory objectFactory = new ObjectFactory();
+    private final DeserializerAsList deserializer = new DeserializerAsList(objectFactory);
 
     @Test
     public void works(){

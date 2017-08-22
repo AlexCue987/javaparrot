@@ -1,5 +1,6 @@
 package org.parrot.typed;
 
+import com.google.gson.Gson;
 import org.junit.Assert;
 import org.junit.Test;
 import org.parrot.testobjects.Thing;
@@ -20,6 +21,9 @@ public class SerializerAsArrayTests {
                         "TypedObject(className=java.lang.Long, persistingMethod=VALUE, value=2), " +
                         "TypedObject(className=java.lang.String, persistingMethod=VALUE, value=three)])",
                 actual.toString());
+        Gson gson = new Gson();
+        String json = gson.toJson(actual);
+        System.out.println(json);
     }
 
     @Test
