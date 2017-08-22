@@ -5,5 +5,6 @@ public enum PersistingMethod {
     LIST,
     MAP,
     SET,
+    ARRAY,
     FIELDS
 }
