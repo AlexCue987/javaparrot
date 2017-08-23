@@ -40,6 +40,7 @@ public class SerializerAsArray extends SerializerAsCollection {
     }
 
     public String getArrayElementTypeName(Object object) {
-        return object.getClass().getComponentType().getTypeName();
+        String arrayTypeName = object.getClass().getComponentType().getTypeName();
+        return arrayTypeName.replace("[]", "");
     }
 }

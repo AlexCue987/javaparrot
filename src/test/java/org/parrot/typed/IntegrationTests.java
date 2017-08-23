@@ -51,6 +51,15 @@ public class IntegrationTests {
     }
 
     @Test
+    public void recreatesArray(){
+        Object[] items = new Object[]{1, 2L, "three", new Thing("ladder", 3)};
+        TypedObject typedThing = typedObjectFactory.of(items);
+        Map<String, Object> map = toJsonAndBack(typedThing);
+        Object[] actual = (Object[])objectFactory.of(map);
+        Assert.assertArrayEquals(items, actual);
+    }
+
+    @Test
     public void recreatesMap(){
         Map<Object, Object> map = new HashMap<>();
         map.put(123, 456L);

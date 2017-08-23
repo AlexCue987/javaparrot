@@ -13,6 +13,7 @@ public class ObjectFactory {
         deserializerMap.put(PersistingMethod.LIST, new DeserializerAsList(this));
         deserializerMap.put(PersistingMethod.MAP, new DeserializerAsMap(this));
         deserializerMap.put(PersistingMethod.SET, new DeserializerAsSet(this));
+        deserializerMap.put(PersistingMethod.ARRAY, new DeserializerAsArray(this));
         deserializerMap.put(PersistingMethod.FIELDS, new DeserializerAsFields(this));
     }
 
